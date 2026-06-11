@@ -1,0 +1,1686 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>StreamVault — Tu acceso a todo</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg: #07070F;
+    --surface: #0F0F1A;
+    --card: #13131F;
+    --card-hover: #1A1A2E;
+    --border: rgba(255,255,255,0.07);
+    --accent: #7C3AED;
+    --accent-light: #9D5CF6;
+    --accent-glow: rgba(124,58,237,0.35);
+    --text: #E8E8F0;
+    --text-muted: #6B7280;
+    --text-dim: #9CA3AF;
+    --green: #10B981;
+    --wa: #25D366;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ── NOISE TEXTURE OVERLAY ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.4;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 32px;
+    background: rgba(7,7,15,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 800;
+    font-size: 1.4rem;
+    letter-spacing: -0.03em;
+    color: var(--text);
+  }
+
+  .logo span {
+    color: var(--accent-light);
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .nav-links a {
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.88rem;
+    font-weight: 500;
+    padding: 6px 14px;
+    border-radius: 8px;
+    transition: all 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--text); background: var(--surface); }
+
+  .nav-cta {
+    background: var(--accent) !important;
+    color: white !important;
+    border-radius: 8px !important;
+    padding: 8px 18px !important;
+  }
+
+  .nav-cta:hover { background: var(--accent-light) !important; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 120px 24px 80px;
+    overflow: hidden;
+  }
+
+  .hero-glow {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 700px;
+    height: 400px;
+    background: radial-gradient(ellipse, rgba(124,58,237,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(124,58,237,0.12);
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-light);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 28px;
+  }
+
+  .hero-badge::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--accent-light);
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.4); }
+  }
+
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.8rem, 7vw, 5.5rem);
+    font-weight: 800;
+    line-height: 1.0;
+    letter-spacing: -0.04em;
+    margin-bottom: 24px;
+    position: relative;
+  }
+
+  .hero h1 .line-accent {
+    background: linear-gradient(135deg, #7C3AED, #C084FC, #60A5FA);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .hero p {
+    font-size: 1.1rem;
+    color: var(--text-dim);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 40px;
+  }
+
+  .hero-actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--accent);
+    color: white;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 28px;
+    border-radius: 12px;
+    transition: all 0.25s;
+    border: none;
+    cursor: pointer;
+  }
+
+  .btn-primary:hover {
+    background: var(--accent-light);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 30px var(--accent-glow);
+  }
+
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: transparent;
+    color: var(--text);
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.95rem;
+    padding: 14px 28px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    transition: all 0.25s;
+  }
+
+  .btn-secondary:hover {
+    background: var(--surface);
+    border-color: rgba(255,255,255,0.15);
+  }
+
+  /* ── STATS ── */
+  .stats {
+    display: flex;
+    gap: 0;
+    justify-content: center;
+    margin-top: 60px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    background: var(--surface);
+    width: fit-content;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .stat {
+    padding: 20px 36px;
+    text-align: center;
+    border-right: 1px solid var(--border);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--text);
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-top: 2px;
+    display: block;
+  }
+
+  /* ── SECTION ── */
+  section {
+    position: relative;
+    z-index: 1;
+    padding: 80px 24px;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .section-header {
+    margin-bottom: 48px;
+  }
+
+  .section-eyebrow {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--accent-light);
+    margin-bottom: 10px;
+  }
+
+  .section-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.15;
+  }
+
+  .section-sub {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    margin-top: 10px;
+    line-height: 1.6;
+  }
+
+  /* ── FILTER TABS ── */
+  .filter-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .filter-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 500;
+    padding: 8px 18px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .filter-btn:hover {
+    color: var(--text);
+    border-color: rgba(255,255,255,0.2);
+  }
+
+  .filter-btn.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white;
+  }
+
+  /* ── CATALOG GRID ── */
+  .catalog-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+    gap: 16px;
+  }
+
+  /* ── PRODUCT CARD ── */
+  .product-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    transition: all 0.3s;
+    cursor: default;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 16px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+  }
+
+  .product-card:hover {
+    transform: translateY(-4px);
+    border-color: var(--card-glow-color, var(--accent));
+    box-shadow: 0 0 30px var(--card-glow-shadow, var(--accent-glow));
+    background: var(--card-hover);
+  }
+
+  /* Platform-specific glow colors */
+  .card-netflix { --card-glow-color: #E50914; --card-glow-shadow: rgba(229,9,20,0.25); }
+  .card-disney { --card-glow-color: #1E90FF; --card-glow-shadow: rgba(30,144,255,0.25); }
+  .card-amazon { --card-glow-color: #00A8E0; --card-glow-shadow: rgba(0,168,224,0.25); }
+  .card-paramount { --card-glow-color: #0064D2; --card-glow-shadow: rgba(0,100,210,0.25); }
+  .card-crunchyroll { --card-glow-color: #F47521; --card-glow-shadow: rgba(244,117,33,0.25); }
+  .card-vix { --card-glow-color: #FF3A00; --card-glow-shadow: rgba(255,58,0,0.25); }
+  .card-apple { --card-glow-color: #A0A0A0; --card-glow-shadow: rgba(160,160,160,0.2); }
+  .card-max { --card-glow-color: #A020F0; --card-glow-shadow: rgba(160,32,240,0.25); }
+  .card-universal { --card-glow-color: #FFD700; --card-glow-shadow: rgba(255,215,0,0.2); }
+  .card-claro { --card-glow-color: #E4002B; --card-glow-shadow: rgba(228,0,43,0.25); }
+  .card-viki { --card-glow-color: #1DB954; --card-glow-shadow: rgba(29,185,84,0.25); }
+  .card-adult { --card-glow-color: #FF6B35; --card-glow-shadow: rgba(255,107,53,0.25); }
+  .card-spotify { --card-glow-color: #1DB954; --card-glow-shadow: rgba(29,185,84,0.3); }
+  .card-tidal { --card-glow-color: #00FFFF; --card-glow-shadow: rgba(0,255,255,0.2); }
+  .card-youtube { --card-glow-color: #FF0000; --card-glow-shadow: rgba(255,0,0,0.25); }
+  .card-amazonmusic { --card-glow-color: #00A8E0; --card-glow-shadow: rgba(0,168,224,0.25); }
+  .card-capcut { --card-glow-color: #00D4AA; --card-glow-shadow: rgba(0,212,170,0.25); }
+  .card-picsart { --card-glow-color: #FF0050; --card-glow-shadow: rgba(255,0,80,0.25); }
+  .card-canva { --card-glow-color: #00C4CC; --card-glow-shadow: rgba(0,196,204,0.25); }
+  .card-xbox { --card-glow-color: #107C10; --card-glow-shadow: rgba(16,124,16,0.3); }
+  .card-duolingo { --card-glow-color: #58CC02; --card-glow-shadow: rgba(88,204,2,0.3); }
+  .card-iptv { --card-glow-color: #7C3AED; --card-glow-shadow: rgba(124,58,237,0.3); }
+  .card-plex { --card-glow-color: #E5A00D; --card-glow-shadow: rgba(229,160,13,0.3); }
+  .card-vpn { --card-glow-color: #0080FF; --card-glow-shadow: rgba(0,128,255,0.25); }
+  .card-fox { --card-glow-color: #FF6600; --card-glow-shadow: rgba(255,102,0,0.25); }
+
+  .card-top {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .card-icon {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+  }
+
+  .card-name {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    line-height: 1.2;
+  }
+
+  .card-category {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .card-price-row {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+  }
+
+  .card-price {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+  }
+
+  .card-price-currency {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .card-price-period {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    margin-left: 2px;
+  }
+
+  .card-note {
+    font-size: 0.75rem;
+    color: var(--accent-light);
+    background: rgba(124,58,237,0.1);
+    border-radius: 6px;
+    padding: 4px 8px;
+    line-height: 1.4;
+  }
+
+  .btn-wa {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: rgba(37,211,102,0.1);
+    border: 1px solid rgba(37,211,102,0.25);
+    color: var(--wa);
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 10px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s;
+    margin-top: auto;
+  }
+
+  .btn-wa:hover {
+    background: rgba(37,211,102,0.18);
+    border-color: var(--wa);
+    transform: translateY(-1px);
+  }
+
+  .wa-icon {
+    width: 16px; height: 16px;
+    fill: var(--wa);
+  }
+
+  /* ── CUENTAS COMPLETAS BANNER ── */
+  .cuentas-banner {
+    background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(96,165,250,0.08));
+    border: 1px solid rgba(124,58,237,0.3);
+    border-radius: 20px;
+    padding: 40px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .cuentas-text h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .cuentas-text p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .plans-pills {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  .plan-pill {
+    background: rgba(255,255,255,0.06);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    padding: 6px 16px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-dim);
+  }
+
+  /* ── CONTACT ── */
+  .contact-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+
+  .contact-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.25s;
+  }
+
+  .contact-card:hover {
+    border-color: rgba(255,255,255,0.18);
+    transform: translateY(-2px);
+    background: var(--card);
+  }
+
+  .contact-icon-wrap {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+  }
+
+  .contact-icon-wa { background: rgba(37,211,102,0.12); }
+  .contact-icon-ig { background: rgba(225,48,108,0.12); }
+
+  .contact-label {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .contact-value {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 600;
+    font-size: 1rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 28px 32px;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  /* ── HIDDEN CLASS ── */
+  .hidden { display: none !important; }
+
+  /* ── REDES SOCIALES ── */
+  .redes-platform-tabs {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    margin-bottom: 36px;
+  }
+
+  .redes-tab {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+    padding: 8px 18px;
+    border-radius: 100px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .redes-tab:hover { color: var(--text); border-color: rgba(255,255,255,0.2); }
+  .redes-tab.active { color: white; }
+  .redes-tab[data-plat="instagram"].active { background: #C13584; border-color: #C13584; box-shadow: 0 0 18px rgba(193,53,132,0.35); }
+  .redes-tab[data-plat="tiktok"].active { background: #010101; border-color: #69C9D0; box-shadow: 0 0 18px rgba(105,201,208,0.3); }
+  .redes-tab[data-plat="facebook"].active { background: #1877F2; border-color: #1877F2; box-shadow: 0 0 18px rgba(24,119,242,0.35); }
+
+  .redes-panels { }
+
+  .redes-panel { display: none; }
+  .redes-panel.active { display: block; }
+
+  .redes-service-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .redes-service-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 28px;
+    transition: all 0.3s;
+  }
+
+  .redes-service-card:hover {
+    transform: translateY(-3px);
+    background: var(--card-hover);
+  }
+
+  .card-ig-seg:hover { border-color: #C13584; box-shadow: 0 0 28px rgba(193,53,132,0.2); }
+  .card-ig-likes:hover { border-color: #E1306C; box-shadow: 0 0 28px rgba(225,48,108,0.2); }
+  .card-tt-seg:hover { border-color: #69C9D0; box-shadow: 0 0 28px rgba(105,201,208,0.2); }
+  .card-tt-likes:hover { border-color: #EE1D52; box-shadow: 0 0 28px rgba(238,29,82,0.2); }
+  .card-fb-seg:hover { border-color: #1877F2; box-shadow: 0 0 28px rgba(24,119,242,0.2); }
+  .card-fb-reac:hover { border-color: #0866FF; box-shadow: 0 0 28px rgba(8,102,255,0.2); }
+
+  .redes-card-header {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 20px;
+  }
+
+  .redes-card-icon {
+    width: 48px;
+    height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    flex-shrink: 0;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+  }
+
+  .redes-card-title {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    font-size: 1.05rem;
+    line-height: 1.2;
+  }
+
+  .redes-card-sub {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    margin-top: 3px;
+  }
+
+  .redes-features {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 20px;
+  }
+
+  .redes-feat {
+    font-size: 0.72rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 100px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid var(--border);
+    color: var(--text-dim);
+  }
+
+  .redes-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    font-size: 0.85rem;
+  }
+
+  .redes-table thead tr th {
+    text-align: left;
+    font-size: 0.7rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--text-muted);
+    padding: 6px 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .redes-table tbody tr {
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+    transition: background 0.15s;
+    cursor: default;
+  }
+
+  .redes-table tbody tr:last-child { border-bottom: none; }
+  .redes-table tbody tr:hover { background: rgba(255,255,255,0.03); }
+
+  .redes-table tbody td {
+    padding: 8px 8px;
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  .redes-table tbody td:last-child {
+    font-family: 'Space Grotesk', sans-serif;
+    font-weight: 700;
+    color: var(--green);
+    font-size: 0.9rem;
+  }
+
+  .redes-table tbody td:first-child { color: var(--text-dim); }
+
+  .redes-cta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    font-weight: 600;
+    font-size: 0.85rem;
+    padding: 11px;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: all 0.2s;
+    border: 1px solid rgba(37,211,102,0.25);
+    background: rgba(37,211,102,0.08);
+    color: var(--wa);
+  }
+
+  .redes-cta:hover {
+    background: rgba(37,211,102,0.18);
+    border-color: var(--wa);
+    transform: translateY(-1px);
+  }
+
+  .redes-trust {
+    margin-top: 48px;
+    background: linear-gradient(135deg, rgba(124,58,237,0.1), rgba(96,165,250,0.06));
+    border: 1px solid rgba(124,58,237,0.25);
+    border-radius: 20px;
+    padding: 36px 40px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+
+  .redes-trust-block h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    margin-bottom: 10px;
+    color: var(--text);
+  }
+
+  .redes-trust-block p {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+
+  .redes-trust-block ul {
+    list-style: none;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+  }
+
+  .redes-trust-block ul li {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  .redes-trust-block ul li::before {
+    content: '✓ ';
+    color: var(--green);
+    font-weight: 700;
+  }
+
+  @media (max-width: 768px) {
+    .redes-service-grid { grid-template-columns: 1fr; }
+    .redes-trust { grid-template-columns: 1fr; padding: 24px 20px; }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav { padding: 14px 20px; }
+    .nav-links .hide-mobile { display: none; }
+    .hero h1 { letter-spacing: -0.03em; }
+    .stats { flex-wrap: wrap; }
+    .stat { padding: 16px 24px; border-right: none; border-bottom: 1px solid var(--border); }
+    .stat:last-child { border-bottom: none; }
+    .cuentas-banner { padding: 28px 24px; }
+    .contact-grid { grid-template-columns: 1fr; }
+    section { padding: 60px 20px; }
+  }
+
+  @media (max-width: 480px) {
+    .catalog-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="logo">Stream<span>Vault</span></div>
+  <div class="nav-links">
+    <a href="#catalogo" class="hide-mobile">Catálogo</a>
+    <a href="#cuentas" class="hide-mobile">Cuentas completas</a>
+    <a href="#redes" class="hide-mobile">Redes Sociales</a>
+    <a href="#contacto" class="nav-cta">Contacto</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-badge">✦ Entregas inmediatas</div>
+  <h1>
+    Todo lo que<br>
+    quieres ver,<br>
+    <span class="line-accent">al mejor precio.</span>
+  </h1>
+  <p>Plataformas de streaming, música, gaming y más. Acceso garantizado, activación al instante.</p>
+  <div class="hero-actions">
+    <a href="#catalogo" class="btn-primary">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      Ver catálogo
+    </a>
+    <a href="https://wa.me/5215516442906" target="_blank" class="btn-secondary">
+      <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      WhatsApp
+    </a>
+  </div>
+  <div class="stats">
+    <div class="stat"><span class="stat-num">25+</span><span class="stat-label">Plataformas</span></div>
+    <div class="stat"><span class="stat-num">$26</span><span class="stat-label">Desde</span></div>
+    <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Soporte</span></div>
+    <div class="stat"><span class="stat-num">⚡</span><span class="stat-label">Inmediato</span></div>
+  </div>
+</div>
+
+<!-- CATALOGO -->
+<section id="catalogo">
+  <div class="section-header">
+    <div class="section-eyebrow">Catálogo completo</div>
+    <h2 class="section-title">Elige tu plataforma</h2>
+    <p class="section-sub">Precios mensuales por perfil. Activación el mismo día.</p>
+  </div>
+
+  <div class="filter-tabs">
+    <button class="filter-btn active" onclick="filterCards('all', this)">Todo</button>
+    <button class="filter-btn" onclick="filterCards('streaming', this)">📺 Streaming</button>
+    <button class="filter-btn" onclick="filterCards('musica', this)">🎵 Música</button>
+    <button class="filter-btn" onclick="filterCards('herramientas', this)">🛠️ Herramientas</button>
+    <button class="filter-btn" onclick="filterCards('gaming', this)">🎮 Gaming</button>
+    <button class="filter-btn" onclick="filterCards('educacion', this)">🦉 Educación</button>
+    <button class="filter-btn" onclick="filterCards('conectividad', this)">📡 Conectividad</button>
+  </div>
+
+  <div class="catalog-grid" id="catalogGrid">
+
+    <!-- STREAMING -->
+    <div class="product-card card-netflix" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">🎬</div>
+        <div><div class="card-name">Netflix</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">90</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Netflix%20%24090/mes%20%F0%9F%8E%AC" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-disney" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">🏰</div>
+        <div><div class="card-name">Disney+</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">40</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Disney%2B%20%2440/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-amazon" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">📦</div>
+        <div><div class="card-name">Amazon Prime</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">40</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Amazon%20Prime%20%2440/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-paramount" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">⛰️</div>
+        <div><div class="card-name">Paramount+</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">29</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Paramount%2B%20%2429/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-crunchyroll" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">⛩️</div>
+        <div><div class="card-name">Crunchyroll</div><div class="card-category">Streaming · Anime</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">35</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Crunchyroll%20%2435/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-vix" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">📺</div>
+        <div><div class="card-name">ViX</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">26</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20ViX%20%2426/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-apple" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">🍎</div>
+        <div><div class="card-name">Apple TV+</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">55</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Apple%20TV%2B%20%2455/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-max" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">💎</div>
+        <div><div class="card-name">MAX Platino</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">45</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20MAX%20Platino%20%2445/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-universal" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">🌍</div>
+        <div><div class="card-name">Universal+</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">80</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Universal%2B%20%2480/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-claro" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">📡</div>
+        <div><div class="card-name">Claro Video</div><div class="card-category">Streaming</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">45</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Claro%20Video%20%2445/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-viki" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">🎎</div>
+        <div><div class="card-name">Viki</div><div class="card-category">Streaming · K-Drama</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">50</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Viki%20%2450/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-adult" data-cat="streaming">
+      <div class="card-top">
+        <div class="card-icon">🔞</div>
+        <div><div class="card-name">Pornhub</div><div class="card-category">Streaming · Adultos</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">65</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Pornhub%20Premium%20%2465/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <!-- MÚSICA -->
+    <div class="product-card card-spotify" data-cat="musica">
+      <div class="card-top">
+        <div class="card-icon">🎧</div>
+        <div><div class="card-name">Spotify</div><div class="card-category">Música</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">120</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Spotify%20%24120/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-tidal" data-cat="musica">
+      <div class="card-top">
+        <div class="card-icon">🌊</div>
+        <div><div class="card-name">Tidal</div><div class="card-category">Música · HiFi</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">56</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Tidal%20%2456/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-youtube" data-cat="musica">
+      <div class="card-top">
+        <div class="card-icon">▶️</div>
+        <div><div class="card-name">YouTube</div><div class="card-category">Música · Invitación</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">45</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <div class="card-note">Por invitación — pregunta disponibilidad</div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20YouTube%20Premium%20(Invitaci%C3%B3n)%20%2445/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-amazonmusic" data-cat="musica">
+      <div class="card-top">
+        <div class="card-icon">🎵</div>
+        <div><div class="card-name">Amazon Music</div><div class="card-category">Música</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">120</span>
+        <span class="card-price-period">/3 meses</span>
+      </div>
+      <div class="card-note">Paquete de 3 meses · $40/mes</div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Amazon%20Music%20(paquete%203M)%20%24120" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <!-- HERRAMIENTAS -->
+    <div class="product-card card-capcut" data-cat="herramientas">
+      <div class="card-top">
+        <div class="card-icon">🎬</div>
+        <div><div class="card-name">CapCut Pro</div><div class="card-category">Edición de Video</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">110</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20CapCut%20Pro%20%24110/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-picsart" data-cat="herramientas">
+      <div class="card-top">
+        <div class="card-icon">🎨</div>
+        <div><div class="card-name">Picsart</div><div class="card-category">Edición de Fotos</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">50</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Picsart%20%2450/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-canva" data-cat="herramientas">
+      <div class="card-top">
+        <div class="card-icon">✏️</div>
+        <div><div class="card-name">Canva Pro</div><div class="card-category">Diseño</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">45</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Canva%20Pro%20%2445/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <!-- GAMING -->
+    <div class="product-card card-xbox" data-cat="gaming">
+      <div class="card-top">
+        <div class="card-icon">🎮</div>
+        <div><div class="card-name">Xbox Game Pass</div><div class="card-category">Gaming · Ultimate</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">360</span>
+        <span class="card-price-period">/2 meses</span>
+      </div>
+      <div class="card-note">Paquete de 2 meses · $180/mes</div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Xbox%20Game%20Pass%20Ultimate%20(2M)%20%24360" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <!-- EDUCACIÓN -->
+    <div class="product-card card-duolingo" data-cat="educacion">
+      <div class="card-top">
+        <div class="card-icon">🦉</div>
+        <div><div class="card-name">Duolingo Plus</div><div class="card-category">Educación · Idiomas</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">35</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Duolingo%20Plus%20%2435/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <!-- CONECTIVIDAD -->
+    <div class="product-card card-iptv" data-cat="conectividad">
+      <div class="card-top">
+        <div class="card-icon">📡</div>
+        <div><div class="card-name">IPTV Streamer Pro</div><div class="card-category">Conectividad · TV</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">85</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20IPTV%20Streamer%20Pro%20%2485/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-plex" data-cat="conectividad">
+      <div class="card-top">
+        <div class="card-icon">🟡</div>
+        <div><div class="card-name">Plex Pass</div><div class="card-category">Conectividad · Media</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">52</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Plex%20Pass%20%2452/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-vpn" data-cat="conectividad">
+      <div class="card-top">
+        <div class="card-icon">🛡️</div>
+        <div><div class="card-name">VPN Surfshark</div><div class="card-category">Privacidad · VPN</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">110</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20VPN%20Surfshark%20%24110/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+    <div class="product-card card-fox" data-cat="conectividad">
+      <div class="card-top">
+        <div class="card-icon">🦊</div>
+        <div><div class="card-name">Fox One</div><div class="card-category">Conectividad · TV</div></div>
+      </div>
+      <div class="card-price-row">
+        <span class="card-price-currency">$</span>
+        <span class="card-price">85</span>
+        <span class="card-price-period">/mes</span>
+      </div>
+      <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesa%20Fox%20One%20%2485/mes" target="_blank" class="btn-wa">
+        <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Pedir ahora
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<!-- CUENTAS COMPLETAS -->
+<section id="cuentas" style="padding-top: 0;">
+  <div class="cuentas-banner">
+    <div class="cuentas-text">
+      <h3>🔑 Cuentas Completas</h3>
+      <p>¿Quieres acceso total a la cuenta? Tenemos planes de 1, 3, 6 y 12 meses con precios especiales.</p>
+      <div class="plans-pills">
+        <span class="plan-pill">1 mes</span>
+        <span class="plan-pill">3 meses</span>
+        <span class="plan-pill">6 meses</span>
+        <span class="plan-pill">12 meses 🔥</span>
+      </div>
+    </div>
+    <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20las%20cuentas%20completas%2C%20%C2%BFqu%C3%A9%20planes%20tienes?" target="_blank" class="btn-primary" style="flex-shrink:0; white-space:nowrap;">
+      <svg class="wa-icon" viewBox="0 0 24 24" style="fill:white;"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      Preguntar precios
+    </a>
+  </div>
+</section>
+
+<!-- REDES SOCIALES -->
+<section id="redes">
+  <div class="section-header">
+    <div class="section-eyebrow">Impulsa tu presencia</div>
+    <h2 class="section-title">Seguidores &amp; Likes</h2>
+    <p class="section-sub">Entrega inmediata · Refill gratuito · 100% seguro para tu cuenta.</p>
+  </div>
+
+  <!-- TABS DE PLATAFORMA -->
+  <div class="redes-platform-tabs">
+    <button class="redes-tab active" data-plat="instagram" onclick="switchPlat('instagram', this)">📸 Instagram</button>
+    <button class="redes-tab" data-plat="tiktok" onclick="switchPlat('tiktok', this)">🎵 TikTok</button>
+    <button class="redes-tab" data-plat="facebook" onclick="switchPlat('facebook', this)">📘 Facebook</button>
+  </div>
+
+  <div class="redes-panels">
+
+    <!-- ══ INSTAGRAM ══ -->
+    <div class="redes-panel active" id="plat-instagram">
+      <div class="redes-service-grid">
+
+        <!-- Seguidores IG -->
+        <div class="redes-service-card card-ig-seg">
+          <div class="redes-card-header">
+            <div class="redes-card-icon">👥</div>
+            <div>
+              <div class="redes-card-title">Instagram · Seguidores</div>
+              <div class="redes-card-sub">Crecimiento orgánico garantizado</div>
+            </div>
+          </div>
+          <div class="redes-features">
+            <span class="redes-feat">⚡ Entrega inmediata</span>
+            <span class="redes-feat">♻️ Refill gratuito</span>
+            <span class="redes-feat">🔒 Permanentes</span>
+            <span class="redes-feat">🎁 % extra en tu compra</span>
+          </div>
+          <table class="redes-table">
+            <thead><tr><th>Recibes</th><th>Pagas</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>$19 MXN</td></tr>
+              <tr><td>200</td><td>$29 MXN</td></tr>
+              <tr><td>300</td><td>$39 MXN</td></tr>
+              <tr><td>500</td><td>$59 MXN</td></tr>
+              <tr><td>1,000</td><td>$109 MXN</td></tr>
+              <tr><td>1,500</td><td>$149 MXN</td></tr>
+              <tr><td>2,000</td><td>$199 MXN</td></tr>
+              <tr><td>3,000</td><td>$279 MXN</td></tr>
+              <tr><td>5,000</td><td>$459 MXN</td></tr>
+              <tr><td>10,000</td><td>$899 MXN</td></tr>
+            </tbody>
+          </table>
+          <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20Seguidores%20de%20Instagram%20%F0%9F%93%B8%20%C2%BFqu%C3%A9%20paquete%20me%20recomiendas?" target="_blank" class="redes-cta">
+            <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir seguidores IG
+          </a>
+        </div>
+
+        <!-- Likes IG -->
+        <div class="redes-service-card card-ig-likes">
+          <div class="redes-card-header">
+            <div class="redes-card-icon">❤️</div>
+            <div>
+              <div class="redes-card-title">Instagram · Likes</div>
+              <div class="redes-card-sub">Reels y posts · Dividibles</div>
+            </div>
+          </div>
+          <div class="redes-features">
+            <span class="redes-feat">⚡ Entrega inmediata</span>
+            <span class="redes-feat">♻️ Refill gratuito</span>
+            <span class="redes-feat">🎬 Reels &amp; Posts</span>
+            <span class="redes-feat">✂️ Dividibles en varios post</span>
+          </div>
+          <table class="redes-table">
+            <thead><tr><th>Recibes</th><th>Pagas</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>$10 MXN</td></tr>
+              <tr><td>200</td><td>$15 MXN</td></tr>
+              <tr><td>300</td><td>$20 MXN</td></tr>
+              <tr><td>400</td><td>$25 MXN</td></tr>
+              <tr><td>500</td><td>$30 MXN</td></tr>
+              <tr><td>1,000</td><td>$50 MXN</td></tr>
+              <tr><td>2,000</td><td>$70 MXN</td></tr>
+              <tr><td>3,000</td><td>$100 MXN</td></tr>
+              <tr><td>5,000</td><td>$150 MXN</td></tr>
+              <tr><td>10,000</td><td>$249 MXN</td></tr>
+            </tbody>
+          </table>
+          <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20Likes%20de%20Instagram%20%F0%9F%93%B8%20%C2%BFqu%C3%A9%20paquete%20me%20recomiendas?" target="_blank" class="redes-cta">
+            <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir likes IG
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ TIKTOK ══ -->
+    <div class="redes-panel" id="plat-tiktok">
+      <div class="redes-service-grid">
+
+        <!-- Seguidores TT -->
+        <div class="redes-service-card card-tt-seg">
+          <div class="redes-card-header">
+            <div class="redes-card-icon">👥</div>
+            <div>
+              <div class="redes-card-title">TikTok · Seguidores</div>
+              <div class="redes-card-sub">Sin flop ni shadowban</div>
+            </div>
+          </div>
+          <div class="redes-features">
+            <span class="redes-feat">⚡ Entrega inmediata</span>
+            <span class="redes-feat">♻️ Refill gratuito</span>
+            <span class="redes-feat">🔒 Permanentes</span>
+            <span class="redes-feat">🚫 Sin shadowban</span>
+          </div>
+          <table class="redes-table">
+            <thead><tr><th>Recibes</th><th>Pagas</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>$25 MXN</td></tr>
+              <tr><td>200</td><td>$45 MXN</td></tr>
+              <tr><td>300</td><td>$65 MXN</td></tr>
+              <tr><td>500</td><td>$99 MXN</td></tr>
+              <tr><td>1,000</td><td>$179 MXN</td></tr>
+              <tr><td>3,000</td><td>$469 MXN</td></tr>
+              <tr><td>5,000</td><td>$699 MXN</td></tr>
+              <tr><td>10,000</td><td>$1,249 MXN</td></tr>
+              <tr><td>20,000</td><td>$2,399 MXN</td></tr>
+              <tr><td>50,000</td><td>$5,499 MXN</td></tr>
+            </tbody>
+          </table>
+          <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20Seguidores%20de%20TikTok%20%F0%9F%8E%B5%20%C2%BFqu%C3%A9%20paquete%20me%20recomiendas?" target="_blank" class="redes-cta">
+            <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir seguidores TikTok
+          </a>
+        </div>
+
+        <!-- Likes TT -->
+        <div class="redes-service-card card-tt-likes">
+          <div class="redes-card-header">
+            <div class="redes-card-icon">🔥</div>
+            <div>
+              <div class="redes-card-title">TikTok · Likes</div>
+              <div class="redes-card-sub">Impulsa el algoritmo</div>
+            </div>
+          </div>
+          <div class="redes-features">
+            <span class="redes-feat">⚡ Entrega inmediata</span>
+            <span class="redes-feat">🔒 Permanentes</span>
+            <span class="redes-feat">🚫 Sin shadowban</span>
+            <span class="redes-feat">📈 Impulsa el algoritmo</span>
+          </div>
+          <table class="redes-table">
+            <thead><tr><th>Recibes</th><th>Pagas</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>$15 MXN</td></tr>
+              <tr><td>300</td><td>$35 MXN</td></tr>
+              <tr><td>500</td><td>$55 MXN</td></tr>
+              <tr><td>1,000</td><td>$85 MXN</td></tr>
+              <tr><td>1,500</td><td>$125 MXN</td></tr>
+              <tr><td>2,500</td><td>$195 MXN</td></tr>
+              <tr><td>5,000</td><td>$295 MXN</td></tr>
+              <tr><td>10,000</td><td>$495 MXN</td></tr>
+              <tr><td>20,000</td><td>$895 MXN</td></tr>
+              <tr><td>50,000</td><td>$1,495 MXN</td></tr>
+            </tbody>
+          </table>
+          <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20Likes%20de%20TikTok%20%F0%9F%8E%B5%20%C2%BFqu%C3%A9%20paquete%20me%20recomiendas?" target="_blank" class="redes-cta">
+            <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir likes TikTok
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ══ FACEBOOK ══ -->
+    <div class="redes-panel" id="plat-facebook">
+      <div class="redes-service-grid">
+
+        <!-- Seguidores FB -->
+        <div class="redes-service-card card-fb-seg">
+          <div class="redes-card-header">
+            <div class="redes-card-icon">👥</div>
+            <div>
+              <div class="redes-card-title">Facebook · Seguidores</div>
+              <div class="redes-card-sub">Perfil y FanPage</div>
+            </div>
+          </div>
+          <div class="redes-features">
+            <span class="redes-feat">⚡ Entrega inmediata</span>
+            <span class="redes-feat">🔒 Permanentes</span>
+            <span class="redes-feat">👤 Perfil &amp; FanPage</span>
+          </div>
+          <table class="redes-table">
+            <thead><tr><th>Recibes</th><th>Pagas</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>$15 MXN</td></tr>
+              <tr><td>200</td><td>$25 MXN</td></tr>
+              <tr><td>300</td><td>$35 MXN</td></tr>
+              <tr><td>500</td><td>$55 MXN</td></tr>
+              <tr><td>1,000</td><td>$95 MXN</td></tr>
+              <tr><td>2,000</td><td>$175 MXN</td></tr>
+              <tr><td>3,000</td><td>$255 MXN</td></tr>
+              <tr><td>5,000</td><td>$415 MXN</td></tr>
+              <tr><td>10,000</td><td>$795 MXN</td></tr>
+              <tr><td>20,000</td><td>$1,495 MXN</td></tr>
+            </tbody>
+          </table>
+          <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20Seguidores%20de%20Facebook%20%F0%9F%93%98%20%C2%BFqu%C3%A9%20paquete%20me%20recomiendas?" target="_blank" class="redes-cta">
+            <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir seguidores Facebook
+          </a>
+        </div>
+
+        <!-- Reacciones FB -->
+        <div class="redes-service-card card-fb-reac">
+          <div class="redes-card-header">
+            <div class="redes-card-icon">👍</div>
+            <div>
+              <div class="redes-card-title">Facebook · Reacciones</div>
+              <div class="redes-card-sub">Tú eliges · Dividibles</div>
+            </div>
+          </div>
+          <div class="redes-features">
+            <span class="redes-feat">⚡ Entrega inmediata</span>
+            <span class="redes-feat">🎭 Tú eliges la reacción</span>
+            <span class="redes-feat">✂️ Dividibles en varios post</span>
+            <span class="redes-feat">📈 Impulsan tu publicación</span>
+          </div>
+          <table class="redes-table">
+            <thead><tr><th>Recibes</th><th>Pagas</th></tr></thead>
+            <tbody>
+              <tr><td>100</td><td>$15 MXN</td></tr>
+              <tr><td>200</td><td>$25 MXN</td></tr>
+              <tr><td>300</td><td>$35 MXN</td></tr>
+              <tr><td>500</td><td>$55 MXN</td></tr>
+              <tr><td>1,000</td><td>$95 MXN</td></tr>
+              <tr><td>2,000</td><td>$175 MXN</td></tr>
+              <tr><td>3,000</td><td>$255 MXN</td></tr>
+              <tr><td>5,000</td><td>$415 MXN</td></tr>
+              <tr><td>10,000</td><td>$795 MXN</td></tr>
+              <tr><td>20,000</td><td>$1,495 MXN</td></tr>
+            </tbody>
+          </table>
+          <a href="https://wa.me/5215516442906?text=Hola!%20Me%20interesan%20Reacciones%20de%20Facebook%20%F0%9F%93%98%20%C2%BFqu%C3%A9%20paquete%20me%20recomiendas?" target="_blank" class="redes-cta">
+            <svg class="wa-icon" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            Pedir reacciones Facebook
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+  </div><!-- /redes-panels -->
+
+  <!-- BLOQUE DE CONFIANZA -->
+  <div class="redes-trust">
+    <div class="redes-trust-block">
+      <h4>🔐 Seguridad y confianza</h4>
+      <ul>
+        <li>Cuenta siempre protegida</li>
+        <li>Métodos 100% orgánicos</li>
+        <li>Sin riesgo de baneo</li>
+        <li>Jamás te pediremos contraseñas</li>
+      </ul>
+    </div>
+    <div class="redes-trust-block">
+      <h4>💳 Métodos de pago</h4>
+      <p>Facilidad, seguridad y rapidez en cada pago. Aceptamos transferencia, OXXO Pay, tarjeta y más. Pregúntanos por tu método preferido.</p>
+    </div>
+    <div class="redes-trust-block">
+      <h4>💬 Contacto directo</h4>
+      <p>Para tu tranquilidad, puedes contactarme directamente por WhatsApp. Respondemos rápido, sin bots, sin esperas.</p>
+    </div>
+  </div>
+
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+  <div class="section-header">
+    <div class="section-eyebrow">Contacto</div>
+    <h2 class="section-title">Escríbenos directamente</h2>
+    <p class="section-sub">Respondemos rápido. Activación el mismo día.</p>
+  </div>
+  <div class="contact-grid">
+    <a href="https://wa.me/5215516442906" target="_blank" class="contact-card">
+      <div class="contact-icon-wrap contact-icon-wa">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+      </div>
+      <div>
+        <div class="contact-label">WhatsApp</div>
+        <div class="contact-value">+52 55 1644 2906</div>
+      </div>
+    </a>
+    <a href="https://instagram.com/streamvault.mx" target="_blank" class="contact-card">
+      <div class="contact-icon-wrap contact-icon-ig">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#E1306C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="#E1306C" stroke="none"/></svg>
+      </div>
+      <div>
+        <div class="contact-label">Instagram</div>
+        <div class="contact-value">@streamvault.mx</div>
+      </div>
+    </a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <span>© 2025 StreamVault · Hecho con ❤️ · <a href="https://wa.me/5215516442906" style="color:var(--accent-light);text-decoration:none;">Contacto</a></span>
+</footer>
+
+<script>
+  function switchPlat(plat, btn) {
+    document.querySelectorAll('.redes-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.redes-panel').forEach(p => p.classList.remove('active'));
+    document.getElementById('plat-' + plat).classList.add('active');
+  }
+
+  function filterCards(cat, btn) {
+    // Update button states
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    // Filter cards
+    document.querySelectorAll('.product-card').forEach(card => {
+      if (cat === 'all' || card.dataset.cat === cat) {
+        card.style.display = 'flex';
+      } else {
+        card.style.display = 'none';
+      }
+    });
+  }
+</script>
+</body>
+</html>
