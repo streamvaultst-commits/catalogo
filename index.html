@@ -734,9 +734,9 @@
 <nav>
   <div class="logo">Stream<span>Vault</span></div>
   <div class="nav-links">
+    <a href="#combos">Combos</a>
     <a href="#catalogo">Catálogo</a>
     <a href="#completas">Completas</a>
-    <a href="#combos">Combos</a>
     <a href="#redes">Seguidores</a>
     <a href="#contacto" class="nav-cta">WhatsApp</a>
   </div>
@@ -748,7 +748,7 @@
     <h1>Todo lo que<br>quieres ver,<br><span>en un solo lugar.</span></h1>
     <p>Streaming, música, herramientas, combos y servicios para redes sociales. Pregunta disponibilidad antes de pagar.</p>
     <div class="hero-actions">
-      <a href="#catalogo" class="btn-primary">Ver catálogo</a>
+      <a href="#combos" class="btn-primary">Ver combos</a>
       <a href="https://wa.me/525516442906?text=Hola,%20quiero%20preguntar%20disponibilidad%20del%20cat%C3%A1logo%20StreamVault" target="_blank" class="btn-secondary">Pedir por WhatsApp</a>
     </div>
     <div class="stats">
@@ -761,21 +761,33 @@
 </div>
 
 <section class="quick-sections" aria-label="Botones de acción">
+  <a class="quick-card" href="#combos">
+    <div class="quick-icon">🌟</div>
+    <div class="quick-title">Combos</div>
+    <div class="quick-text">Paquetes premium primero, con varias plataformas en una sola compra.</div>
+  </a>
   <a class="quick-card" href="#catalogo">
     <div class="quick-icon">💻</div>
     <div class="quick-title">Cuentas</div>
     <div class="quick-text">Perfiles, pantallas, originales, genéricas y herramientas digitales.</div>
-  </a>
-  <a class="quick-card" href="#combos">
-    <div class="quick-icon">🌟</div>
-    <div class="quick-title">Combos</div>
-    <div class="quick-text">Paquetes de varias plataformas listos para pedir por WhatsApp.</div>
   </a>
   <a class="quick-card" href="#redes">
     <div class="quick-icon">📲</div>
     <div class="quick-title">Seguidores y likes</div>
     <div class="quick-text">Instagram, TikTok y Facebook: seguidores, likes, vistas y comentarios.</div>
   </a>
+</section>
+
+<section id="combos">
+  <div class="section-header">
+    <div>
+      <div class="section-eyebrow">Paquetes</div>
+      <h2 class="section-title">Combos StreamVault</h2>
+      <p class="section-sub">Combos para quienes quieren varias plataformas en una sola compra.</p>
+    </div>
+    <div class="section-pill">Ahorro por paquete</div>
+  </div>
+  <div id="comboRender"></div>
 </section>
 
 <section id="catalogo">
@@ -815,17 +827,9 @@
   <div id="completeRender"></div>
 </section>
 
-<section id="combos">
-  <div class="section-header">
-    <div>
-      <div class="section-eyebrow">Paquetes</div>
-      <h2 class="section-title">Combos StreamVault</h2>
-      <p class="section-sub">Combos para quienes quieren varias plataformas en una sola compra.</p>
-    </div>
-    <div class="section-pill">Ahorro por paquete</div>
-  </div>
-  <div id="comboRender"></div>
-</section>
+
+
+
 
 <section id="redes">
   <div class="section-header">
@@ -1055,6 +1059,14 @@ const completeProducts = [
 ];
 
 const combos = [
+  {group:'🦥 Combos Premium', name:'Combo Mariposas', price:159, desc:'Netflix + Disney+ + Vix + HBO Max + YouTube + Prime Video', icon:'🦋', style:'card-netflix'},
+  {group:'🦥 Combos Premium', name:'Combo Pollito', price:199, desc:'HBO Max Anual + Vix + Disney+ + Crunchyroll + YouTube + Netflix + Prime Video + Paramount+', icon:'🐥', style:'card-general'},
+  {group:'🦥 Combos Premium', name:'Combo León', price:86, desc:'HBO Max + Prime Video + Disney+', icon:'🦁', style:'card-max'},
+  {group:'🦥 Combos Premium', name:'Combo Delfín', price:99, desc:'HBO Max + Prime Video + Disney+ + Paramount+ + Crunchyroll', icon:'🐬', style:'card-prime'},
+  {group:'🦥 Combos Premium', name:'Combo Oso', price:70, desc:'HBO Max + Vix + Prime Video', icon:'🐻', style:'card-general'},
+  {group:'🦥 Combos Premium', name:'Combo Pez', price:89, desc:'HBO Max + Disney+ + Vix + Prime Video', icon:'🐟', style:'card-disney'},
+  {group:'🦥 Combos Premium', name:'Combo Elefante', price:90, desc:'HBO Max + Prime Video + Disney+ + Crunchyroll', icon:'🐘', style:'card-general'},
+
   {group:'🌟 Combos StreamVault', name:'Combo Nova', price:75, desc:'Netflix + Vix + Paramount', icon:'🚀', style:'card-general'},
   {group:'🌟 Combos StreamVault', name:'Combo Eclipse', price:55, desc:'Disney Premium Hulu + Crunchyroll + Paramount + Vix', icon:'🌙', style:'card-general'},
   {group:'🌟 Combos StreamVault', name:'Combo Órbita', price:48, desc:'Vix + Disney + Paramount', icon:'🪐', style:'card-general'},
