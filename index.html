@@ -4,53 +4,49 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>StreamVault — Catálogo</title>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   :root {
     --bg: #07070F;
     --surface: #0F0F1A;
     --card: #13131F;
     --card-hover: #1A1A2E;
-    --border: rgba(255,255,255,0.08);
-    --border-strong: rgba(255,255,255,0.16);
+    --border: rgba(255,255,255,0.09);
+    --border-strong: rgba(255,255,255,0.17);
     --accent: #7C3AED;
-    --accent-light: #9D5CF6;
-    --accent-glow: rgba(124,58,237,0.32);
+    --accent-light: #A78BFA;
+    --accent-glow: rgba(124,58,237,0.34);
     --cyan: #60A5FA;
     --green: #10B981;
     --wa: #25D366;
     --danger: #FB7185;
     --warning: #FBBF24;
-    --text: #E8E8F0;
-    --text-muted: #7C8192;
-    --text-dim: #A7AABC;
+    --text: #EDEDF7;
+    --text-muted: #858B9F;
+    --text-dim: #B5B8C9;
   }
-
   html { scroll-behavior: smooth; }
-
   body {
     font-family: 'Inter', sans-serif;
     background:
-      radial-gradient(circle at 50% -15%, rgba(124,58,237,0.28), transparent 42%),
-      radial-gradient(circle at 0% 15%, rgba(96,165,250,0.12), transparent 28%),
+      radial-gradient(circle at 50% -18%, rgba(124,58,237,0.34), transparent 42%),
+      radial-gradient(circle at 0% 12%, rgba(96,165,250,0.14), transparent 30%),
+      radial-gradient(circle at 100% 22%, rgba(16,185,129,0.09), transparent 24%),
       var(--bg);
     color: var(--text);
     min-height: 100vh;
     overflow-x: hidden;
   }
-
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.045'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     pointer-events: none;
     z-index: 0;
-    opacity: .4;
+    opacity: .42;
   }
-
   nav {
     position: sticky;
     top: 0;
@@ -59,76 +55,57 @@
     align-items: center;
     justify-content: space-between;
     gap: 18px;
-    padding: 16px 28px;
-    background: rgba(7,7,15,0.82);
+    padding: 15px 28px;
+    background: rgba(7,7,15,0.84);
     backdrop-filter: blur(18px);
     border-bottom: 1px solid var(--border);
   }
-
   .logo {
     font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
+    font-weight: 900;
     font-size: 1.35rem;
-    letter-spacing: -0.04em;
+    letter-spacing: -0.045em;
     color: var(--text);
     white-space: nowrap;
   }
-
   .logo span { color: var(--accent-light); }
-
-  .nav-links {
-    display: flex;
-    gap: 7px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-  }
-
+  .nav-links { display: flex; gap: 7px; align-items: center; flex-wrap: wrap; justify-content: flex-end; }
   .nav-links a {
     color: var(--text-muted);
     text-decoration: none;
     font-size: .84rem;
-    font-weight: 600;
+    font-weight: 800;
     padding: 7px 12px;
     border-radius: 999px;
     transition: all .2s;
   }
-
   .nav-links a:hover { color: var(--text); background: var(--surface); }
-
-  .nav-cta {
-    background: var(--accent) !important;
-    color: white !important;
-  }
-
+  .nav-cta { background: var(--accent) !important; color: white !important; }
   .hero {
     position: relative;
     z-index: 1;
-    min-height: 76vh;
+    min-height: 72vh;
     display: grid;
     place-items: center;
     text-align: center;
-    padding: 78px 20px 42px;
+    padding: 76px 20px 42px;
   }
-
   .hero-inner { max-width: 980px; }
-
   .hero-badge {
     display: inline-flex;
     align-items: center;
     gap: 7px;
-    background: rgba(124,58,237,0.12);
-    border: 1px solid rgba(124,58,237,0.32);
+    background: rgba(124,58,237,0.13);
+    border: 1px solid rgba(124,58,237,0.34);
     border-radius: 999px;
     padding: 7px 16px;
     font-size: .78rem;
-    font-weight: 800;
+    font-weight: 900;
     color: var(--accent-light);
     letter-spacing: .07em;
     text-transform: uppercase;
     margin-bottom: 22px;
   }
-
   .hero-badge::before {
     content: '';
     width: 7px;
@@ -137,23 +114,20 @@
     background: var(--green);
     box-shadow: 0 0 16px var(--green);
   }
-
   .hero h1 {
     font-family: 'Space Grotesk', sans-serif;
     font-size: clamp(2.3rem, 6.5vw, 5.2rem);
-    font-weight: 800;
+    font-weight: 900;
     line-height: .98;
-    letter-spacing: -0.055em;
+    letter-spacing: -0.06em;
     margin-bottom: 20px;
   }
-
   .hero h1 span {
     background: linear-gradient(135deg, #7C3AED, #C084FC, #60A5FA);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-
   .hero p {
     color: var(--text-dim);
     max-width: 650px;
@@ -161,15 +135,7 @@
     font-size: 1.02rem;
     line-height: 1.7;
   }
-
-  .hero-actions {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 36px;
-  }
-
+  .hero-actions { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px; margin-bottom: 34px; }
   .btn-primary, .btn-secondary {
     display: inline-flex;
     align-items: center;
@@ -178,330 +144,54 @@
     text-decoration: none;
     border-radius: 13px;
     padding: 13px 22px;
-    font-weight: 800;
+    font-weight: 900;
     font-size: .92rem;
     transition: all .22s;
   }
-
-  .btn-primary {
-    background: var(--accent);
-    color: white;
-    box-shadow: 0 10px 32px var(--accent-glow);
-  }
-
-  .btn-primary:hover {
-    transform: translateY(-2px);
-    background: var(--accent-light);
-  }
-
-  .btn-secondary {
-    border: 1px solid var(--border-strong);
-    color: var(--text);
-    background: rgba(255,255,255,0.04);
-  }
-
+  .btn-primary { background: var(--accent); color: white; box-shadow: 0 10px 32px var(--accent-glow); }
+  .btn-primary:hover { transform: translateY(-2px); background: var(--accent-light); }
+  .btn-secondary { border: 1px solid var(--border-strong); color: var(--text); background: rgba(255,255,255,0.04); }
   .btn-secondary:hover { background: var(--surface); transform: translateY(-2px); }
-
-  .stats {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(115px, 1fr));
-    gap: 10px;
-    max-width: 720px;
-    margin: 0 auto;
-  }
-
-  .stat {
-    background: rgba(15,15,26,.72);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    padding: 16px 13px;
-  }
-
-  .stat-num {
-    display: block;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.45rem;
-    font-weight: 800;
-  }
-
-  .stat-label {
-    display: block;
-    color: var(--text-muted);
-    font-size: .74rem;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    margin-top: 2px;
-  }
-
-  section {
-    position: relative;
-    z-index: 1;
-    max-width: 1180px;
-    margin: 0 auto;
-    padding: 52px 20px;
-  }
-
-  .section-header {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 18px;
-    align-items: end;
-    margin-bottom: 24px;
-  }
-
-  .section-eyebrow {
-    font-size: .75rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    letter-spacing: .13em;
-    color: var(--accent-light);
-    margin-bottom: 8px;
-  }
-
-  .section-title {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: clamp(1.55rem, 3.5vw, 2.4rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
-  }
-
-  .section-sub {
-    color: var(--text-muted);
-    font-size: .92rem;
-    line-height: 1.6;
-    margin-top: 8px;
-    max-width: 650px;
-  }
-
-  .section-pill {
-    background: rgba(124,58,237,0.12);
-    color: var(--accent-light);
-    border: 1px solid rgba(124,58,237,0.26);
-    padding: 9px 14px;
-    border-radius: 999px;
-    font-weight: 800;
-    font-size: .78rem;
-    white-space: nowrap;
-  }
-
-  .quick-sections {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 13px;
-    margin-top: -18px;
-    padding-top: 0;
-  }
-
-  .quick-card {
-    text-decoration: none;
-    color: var(--text);
-    background: linear-gradient(145deg, rgba(19,19,31,.95), rgba(15,15,26,.9));
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 20px;
-    transition: all .24s;
-    min-height: 126px;
-  }
-
-  .quick-card:hover {
-    transform: translateY(-4px);
-    border-color: rgba(124,58,237,.55);
-    box-shadow: 0 14px 34px rgba(124,58,237,.16);
-  }
-
+  .stats { display: grid; grid-template-columns: repeat(4, minmax(115px, 1fr)); gap: 10px; max-width: 720px; margin: 0 auto; }
+  .stat { background: rgba(15,15,26,.72); border: 1px solid var(--border); border-radius: 16px; padding: 16px 13px; }
+  .stat-num { display: block; font-family: 'Space Grotesk', sans-serif; font-size: 1.45rem; font-weight: 900; }
+  .stat-label { display: block; color: var(--text-muted); font-size: .74rem; text-transform: uppercase; letter-spacing: .08em; margin-top: 2px; font-weight: 800; }
+  section { position: relative; z-index: 1; max-width: 1180px; margin: 0 auto; padding: 52px 20px; }
+  .quick-sections { display: grid; grid-template-columns: repeat(3, 1fr); gap: 13px; margin-top: -18px; padding-top: 0; }
+  .quick-card { text-decoration: none; color: var(--text); background: linear-gradient(145deg, rgba(19,19,31,.95), rgba(15,15,26,.9)); border: 1px solid var(--border); border-radius: 18px; padding: 20px; transition: all .24s; min-height: 126px; }
+  .quick-card:hover { transform: translateY(-4px); border-color: rgba(124,58,237,.55); box-shadow: 0 14px 34px rgba(124,58,237,.16); }
   .quick-icon { font-size: 1.55rem; margin-bottom: 10px; }
-  .quick-title { font-family: 'Space Grotesk', sans-serif; font-weight: 800; font-size: 1.08rem; }
+  .quick-title { font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 1.08rem; }
   .quick-text { color: var(--text-muted); font-size: .82rem; line-height: 1.45; margin-top: 6px; }
-
-  .catalog-tools {
-    position: sticky;
-    top: 64px;
-    z-index: 40;
-    background: rgba(7,7,15,.84);
-    backdrop-filter: blur(16px);
-    border: 1px solid var(--border);
-    border-radius: 18px;
-    padding: 12px;
-    margin-bottom: 22px;
-    display: grid;
-    grid-template-columns: minmax(220px, 1fr) auto;
-    gap: 10px;
-  }
-
-  .search {
-    width: 100%;
-    border: 1px solid var(--border);
-    background: rgba(255,255,255,.045);
-    color: var(--text);
-    outline: none;
-    border-radius: 13px;
-    padding: 12px 14px;
-    font: inherit;
-    font-size: .92rem;
-  }
-
-  .tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 7px;
-    justify-content: flex-end;
-  }
-
-  .tab {
-    border: 1px solid var(--border);
-    background: var(--surface);
-    color: var(--text-muted);
-    border-radius: 999px;
-    padding: 10px 13px;
-    font: inherit;
-    font-size: .78rem;
-    font-weight: 800;
-    cursor: pointer;
-    transition: all .18s;
-  }
-
-  .tab:hover { color: var(--text); border-color: var(--border-strong); }
-  .tab.active { background: var(--accent); color: white; border-color: transparent; }
-
+  .section-header { display: grid; grid-template-columns: 1fr auto; gap: 18px; align-items: end; margin-bottom: 24px; }
+  .section-eyebrow { font-size: .75rem; font-weight: 900; text-transform: uppercase; letter-spacing: .13em; color: var(--accent-light); margin-bottom: 8px; }
+  .section-title { font-family: 'Space Grotesk', sans-serif; font-size: clamp(1.55rem, 3.5vw, 2.4rem); font-weight: 900; letter-spacing: -0.04em; }
+  .section-sub { color: var(--text-muted); font-size: .92rem; line-height: 1.6; margin-top: 8px; max-width: 650px; }
+  .section-pill { background: rgba(124,58,237,0.12); color: var(--accent-light); border: 1px solid rgba(124,58,237,0.26); padding: 9px 14px; border-radius: 999px; font-weight: 900; font-size: .78rem; white-space: nowrap; }
+  .catalog-tools { position: sticky; top: 64px; z-index: 40; background: rgba(7,7,15,.84); backdrop-filter: blur(16px); border: 1px solid var(--border); border-radius: 18px; padding: 12px; margin-bottom: 22px; }
+  .search { width: 100%; border: 1px solid var(--border); background: rgba(255,255,255,.045); color: var(--text); outline: none; border-radius: 13px; padding: 12px 14px; font: inherit; font-size: .92rem; }
   .group { margin: 28px 0 10px; }
-  .group-title {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.18rem;
-    font-weight: 800;
-    margin-bottom: 12px;
-    letter-spacing: -0.02em;
-  }
-
-  .group-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .catalog-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(188px, 1fr));
-    gap: 12px;
-  }
-
-  .product-card {
-    background: linear-gradient(180deg, var(--card), rgba(15,15,26,.96));
-    border: 1px solid var(--border);
-    border-radius: 17px;
-    padding: 15px;
-    transition: all .22s;
-    position: relative;
-    overflow: hidden;
-    min-height: 166px;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .product-card:hover {
-    transform: translateY(-3px);
-    border-color: var(--card-glow-color, var(--accent));
-    box-shadow: 0 12px 28px var(--card-glow-shadow, var(--accent-glow));
-    background: var(--card-hover);
-  }
-
-  .card-top {
-    display: flex;
-    gap: 10px;
-    align-items: center;
-    margin-bottom: 11px;
-  }
-
-  .card-icon {
-    width: 38px;
-    height: 38px;
-    border-radius: 11px;
-    display: grid;
-    place-items: center;
-    background: rgba(255,255,255,.055);
-    border: 1px solid var(--border);
-    font-size: 1.15rem;
-    flex-shrink: 0;
-  }
-
-  .card-name {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
-    font-size: .96rem;
-    line-height: 1.15;
-  }
-
-  .card-category {
-    color: var(--text-muted);
-    font-size: .72rem;
-    margin-top: 2px;
-  }
-
+  .group-title { display: flex; align-items: center; gap: 10px; font-family: 'Space Grotesk', sans-serif; font-size: 1.18rem; font-weight: 900; margin-bottom: 12px; letter-spacing: -0.02em; }
+  .group-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+  .catalog-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(188px, 1fr)); gap: 12px; }
+  .product-card { background: linear-gradient(180deg, var(--card), rgba(15,15,26,.96)); border: 1px solid var(--border); border-radius: 17px; padding: 15px; transition: all .22s; position: relative; overflow: hidden; min-height: 166px; display: flex; flex-direction: column; }
+  .product-card:hover { transform: translateY(-3px); border-color: var(--card-glow-color, var(--accent)); box-shadow: 0 12px 28px var(--card-glow-shadow, var(--accent-glow)); background: var(--card-hover); }
+  .card-top { display: flex; gap: 10px; align-items: center; margin-bottom: 11px; }
+  .card-icon { width: 38px; height: 38px; border-radius: 11px; display: grid; place-items: center; background: rgba(255,255,255,.055); border: 1px solid var(--border); font-size: 1.15rem; flex-shrink: 0; }
+  .card-name { font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: .96rem; line-height: 1.15; }
+  .card-category { color: var(--text-muted); font-size: .72rem; margin-top: 2px; line-height: 1.35; }
   .tag-row { display: flex; flex-wrap: wrap; gap: 5px; min-height: 21px; margin-bottom: 9px; }
-
-  .tag {
-    font-size: .66rem;
-    font-weight: 800;
-    letter-spacing: .02em;
-    padding: 4px 8px;
-    border-radius: 999px;
-    background: rgba(255,255,255,.06);
-    color: var(--text-dim);
-    border: 1px solid rgba(255,255,255,.07);
-  }
-
+  .tag { font-size: .66rem; font-weight: 900; letter-spacing: .02em; padding: 4px 8px; border-radius: 999px; background: rgba(255,255,255,.06); color: var(--text-dim); border: 1px solid rgba(255,255,255,.07); }
   .tag.original { color: #BFDBFE; background: rgba(96,165,250,.12); border-color: rgba(96,165,250,.22); }
   .tag.generico { color: #DDD6FE; background: rgba(124,58,237,.12); border-color: rgba(124,58,237,.24); }
-  .tag.completa { color: #BBF7D0; background: rgba(16,185,129,.11); border-color: rgba(16,185,129,.22); }
-  .tag.alert { color: #FECACA; background: rgba(251,113,133,.1); border-color: rgba(251,113,133,.22); }
-
-  .card-price-row {
-    margin-top: auto;
-    display: flex;
-    align-items: flex-end;
-    gap: 2px;
-    margin-bottom: 12px;
-  }
-
-  .card-price-currency {
-    font-family: 'Space Grotesk', sans-serif;
-    color: var(--green);
-    font-weight: 800;
-    font-size: .95rem;
-    padding-bottom: 4px;
-  }
-
-  .card-price {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
-    font-size: 2rem;
-    letter-spacing: -0.06em;
-    line-height: .9;
-  }
-
+  .tag.renovable { color: #BBF7D0; background: rgba(16,185,129,.11); border-color: rgba(16,185,129,.22); }
+  .tag.no-renovable { color: #FECACA; background: rgba(251,113,133,.1); border-color: rgba(251,113,133,.22); }
+  .card-price-row { margin-top: auto; display: flex; align-items: flex-end; gap: 2px; margin-bottom: 12px; }
+  .card-price-currency { font-family: 'Space Grotesk', sans-serif; color: var(--green); font-weight: 900; font-size: .95rem; padding-bottom: 4px; }
+  .card-price { font-family: 'Space Grotesk', sans-serif; font-weight: 900; font-size: 2rem; letter-spacing: -0.06em; line-height: .9; }
   .card-price-period { color: var(--text-muted); font-size: .76rem; padding-bottom: 3px; }
-
-  .btn-wa {
-    width: 100%;
-    text-decoration: none;
-    color: #04130a;
-    background: var(--wa);
-    border-radius: 11px;
-    padding: 10px 11px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    font-weight: 900;
-    font-size: .82rem;
-    transition: all .18s;
-  }
-
+  .btn-wa { width: 100%; text-decoration: none; color: #04130a; background: var(--wa); border-radius: 11px; padding: 10px 11px; display: flex; align-items: center; justify-content: center; gap: 7px; font-weight: 900; font-size: .82rem; transition: all .18s; }
   .btn-wa:hover { filter: brightness(1.08); transform: translateY(-1px); }
-
   .card-netflix { --card-glow-color: #E50914; --card-glow-shadow: rgba(229,9,20,.22); }
   .card-disney { --card-glow-color: #1E90FF; --card-glow-shadow: rgba(30,144,255,.22); }
   .card-max { --card-glow-color: #8B5CF6; --card-glow-shadow: rgba(139,92,246,.22); }
@@ -510,223 +200,28 @@
   .card-youtube { --card-glow-color: #FF0000; --card-glow-shadow: rgba(255,0,0,.2); }
   .card-canva { --card-glow-color: #00C4CC; --card-glow-shadow: rgba(0,196,204,.22); }
   .card-general { --card-glow-color: #C084FC; --card-glow-shadow: rgba(192,132,252,.16); }
-
-  .rules-grid {
-    display: grid;
-    grid-template-columns: 1.1fr .9fr;
-    gap: 14px;
-  }
-
-  .rule-box {
-    background: linear-gradient(135deg, rgba(124,58,237,.13), rgba(96,165,250,.06));
-    border: 1px solid rgba(124,58,237,.26);
-    border-radius: 20px;
-    padding: 22px;
-  }
-
-  .rule-box.danger {
-    background: linear-gradient(135deg, rgba(251,113,133,.12), rgba(124,58,237,.055));
-    border-color: rgba(251,113,133,.25);
-  }
-
-  .rule-box h3 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.1rem;
-    margin-bottom: 9px;
-  }
-
-  .rule-box p, .rule-box li {
-    color: var(--text-dim);
-    font-size: .9rem;
-    line-height: 1.6;
-  }
-
-  .rule-box ul { list-style: none; display: grid; gap: 5px; }
-  .rule-box li::before { content: '✓ '; color: var(--green); font-weight: 900; }
-  .rule-box.danger li::before { content: '⚠ '; color: var(--danger); }
-
-  .redes-grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 14px;
-  }
-
-  .redes-card {
-    background: linear-gradient(180deg, var(--card), rgba(15,15,26,.98));
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 22px;
-    transition: all .24s;
-    overflow: hidden;
-  }
-
-  .redes-card:hover {
-    transform: translateY(-3px);
-    background: var(--card-hover);
-  }
-
+  .redes-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+  .redes-card { background: linear-gradient(180deg, var(--card), rgba(15,15,26,.98)); border: 1px solid var(--border); border-radius: 20px; padding: 22px; transition: all .24s; overflow: hidden; }
+  .redes-card:hover { transform: translateY(-3px); background: var(--card-hover); }
   .redes-card.instagram:hover { border-color: #C13584; box-shadow: 0 0 28px rgba(193,53,132,.2); }
-  .redes-card.tiktok:hover { border-color: #69C9D0; box-shadow: 0 0 28px rgba(105,201,208,.2); }
   .redes-card.facebook:hover { border-color: #1877F2; box-shadow: 0 0 28px rgba(24,119,242,.2); }
-
-  .redes-head {
-    display: flex;
-    align-items: center;
-    gap: 13px;
-    margin-bottom: 14px;
-  }
-
-  .redes-icon {
-    width: 46px;
-    height: 46px;
-    border-radius: 13px;
-    display: grid;
-    place-items: center;
-    background: rgba(255,255,255,.055);
-    border: 1px solid var(--border);
-    font-size: 1.45rem;
-    flex-shrink: 0;
-  }
-
-  .redes-card h3 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.08rem;
-    margin-bottom: 3px;
-  }
-
-  .redes-sub {
-    color: var(--text-muted);
-    font-size: .73rem;
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    font-weight: 800;
-  }
-
-  .redes-card p {
-    color: var(--text-muted);
-    font-size: .84rem;
-    line-height: 1.5;
-    margin-bottom: 13px;
-  }
-
-  .redes-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 12px 0 16px;
-    font-size: .82rem;
-  }
-
-  .redes-table th {
-    text-align: left;
-    color: var(--text-muted);
-    text-transform: uppercase;
-    letter-spacing: .08em;
-    font-size: .68rem;
-    padding: 7px 6px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .redes-table td {
-    padding: 9px 6px;
-    border-bottom: 1px solid rgba(255,255,255,.045);
-    color: var(--text-dim);
-  }
-
-  .redes-table td:last-child {
-    color: var(--green);
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
-    text-align: right;
-  }
-
-  .redes-feats { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
-
-  .mini-price {
-    display: flex;
-    align-items: baseline;
-    gap: 5px;
-    margin: 8px 0 14px;
-  }
-
-  .mini-price b {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.45rem;
-    color: var(--green);
-  }
-
-  .mini-price span { color: var(--text-muted); font-size: .8rem; }
-
-  .payment-card {
-    background: linear-gradient(135deg, rgba(16,185,129,.12), rgba(124,58,237,.08));
-    border: 1px solid rgba(16,185,129,.24);
-    border-radius: 20px;
-    padding: 24px;
-    display: grid;
-    grid-template-columns: 1fr auto;
-    gap: 18px;
-    align-items: center;
-  }
-
-  .payment-card h3 {
-    font-family: 'Space Grotesk', sans-serif;
-    font-size: 1.25rem;
-    margin-bottom: 8px;
-  }
-
-  .payment-lines {
-    display: grid;
-    gap: 4px;
-    color: var(--text-dim);
-    font-size: .95rem;
-  }
-
-  .payment-number {
-    font-family: 'Space Grotesk', sans-serif;
-    font-weight: 800;
-    font-size: 1.22rem;
-    color: var(--text);
-    letter-spacing: .02em;
-  }
-
-  footer {
-    position: relative;
-    z-index: 1;
-    border-top: 1px solid var(--border);
-    text-align: center;
-    padding: 30px 18px 40px;
-    color: var(--text-muted);
-    font-size: .85rem;
-  }
-
-  .hidden { display: none !important; }
-
-  @media (max-width: 920px) {
-    .quick-sections { grid-template-columns: repeat(2, 1fr); }
-    .rules-grid, .redes-grid, .payment-card { grid-template-columns: 1fr; }
-    .catalog-tools { grid-template-columns: 1fr; top: 58px; }
-    .tabs { justify-content: flex-start; }
-    .section-header { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 720px) {
-    nav { padding: 13px 16px; }
-    .nav-links a:not(.nav-cta) { display: none; }
-    .hero { min-height: auto; padding: 64px 18px 34px; }
-    .stats { grid-template-columns: repeat(2, 1fr); }
-    section { padding: 42px 16px; }
-    .catalog-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; }
-    .product-card { padding: 12px; min-height: 155px; border-radius: 15px; }
-    .card-icon { width: 33px; height: 33px; border-radius: 9px; }
-    .card-name { font-size: .87rem; }
-    .card-category { font-size: .66rem; }
-    .card-price { font-size: 1.62rem; }
-    .btn-wa { font-size: .75rem; padding: 9px 8px; }
-    .quick-sections { grid-template-columns: 1fr; }
-  }
-
-  @media (max-width: 390px) {
-    .catalog-grid { grid-template-columns: 1fr; }
-  }
+  .redes-head { display: flex; align-items: center; gap: 13px; margin-bottom: 14px; }
+  .redes-icon { width: 46px; height: 46px; border-radius: 13px; display: grid; place-items: center; background: rgba(255,255,255,.055); border: 1px solid var(--border); font-size: 1.45rem; flex-shrink: 0; }
+  .redes-card h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.08rem; margin-bottom: 3px; }
+  .redes-sub { color: var(--text-muted); font-size: .73rem; text-transform: uppercase; letter-spacing: .08em; font-weight: 900; }
+  .redes-card p { color: var(--text-muted); font-size: .84rem; line-height: 1.5; margin-bottom: 13px; }
+  .redes-table { width: 100%; border-collapse: collapse; margin: 12px 0 16px; font-size: .82rem; }
+  .redes-table th { text-align: left; color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; padding: 7px 6px; border-bottom: 1px solid var(--border); }
+  .redes-table td { padding: 9px 6px; border-bottom: 1px solid rgba(255,255,255,.045); color: var(--text-dim); }
+  .redes-table td:last-child { color: var(--green); font-family: 'Space Grotesk', sans-serif; font-weight: 900; text-align: right; }
+  .note-box { background: linear-gradient(135deg, rgba(124,58,237,.13), rgba(96,165,250,.06)); border: 1px solid rgba(124,58,237,.26); border-radius: 20px; padding: 22px; margin-top: 20px; }
+  .note-box h3 { font-family: 'Space Grotesk', sans-serif; font-size: 1.08rem; margin-bottom: 8px; }
+  .note-box p { color: var(--text-dim); font-size: .9rem; line-height: 1.6; }
+  .floating-wa { position: fixed; right: 18px; bottom: 18px; z-index: 80; display: inline-flex; align-items: center; gap: 8px; background: var(--wa); color: #04130a; text-decoration: none; border-radius: 999px; padding: 13px 17px; font-weight: 900; box-shadow: 0 18px 36px rgba(37,211,102,.24); }
+  footer { position: relative; z-index: 1; border-top: 1px solid var(--border); text-align: center; padding: 30px 18px 40px; color: var(--text-muted); font-size: .85rem; }
+  @media (max-width: 920px) { .quick-sections { grid-template-columns: 1fr; } .redes-grid { grid-template-columns: 1fr; } .catalog-tools { top: 58px; } .section-header { grid-template-columns: 1fr; } }
+  @media (max-width: 720px) { nav { padding: 13px 16px; } .nav-links a:not(.nav-cta) { display: none; } .hero { min-height: auto; padding: 64px 18px 34px; } .stats { grid-template-columns: repeat(2, 1fr); } section { padding: 42px 16px; } .catalog-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 10px; } .product-card { padding: 12px; min-height: 155px; border-radius: 15px; } .card-icon { width: 33px; height: 33px; border-radius: 9px; } .card-name { font-size: .87rem; } .card-category { font-size: .66rem; } .card-price { font-size: 1.62rem; } .btn-wa { font-size: .75rem; padding: 9px 8px; } .floating-wa { right: 12px; bottom: 12px; padding: 12px 14px; font-size: .86rem; } }
+  @media (max-width: 390px) { .catalog-grid { grid-template-columns: 1fr; } }
 </style>
 </head>
 <body>
@@ -735,8 +230,7 @@
   <div class="logo">Stream<span>Vault</span></div>
   <div class="nav-links">
     <a href="#combos">Combos</a>
-    <a href="#catalogo">Catálogo</a>
-    <a href="#completas">Completas</a>
+    <a href="#catalogo">Individuales</a>
     <a href="#redes">Seguidores</a>
     <a href="#contacto" class="nav-cta">WhatsApp</a>
   </div>
@@ -745,15 +239,15 @@
 <div class="hero">
   <div class="hero-inner">
     <div class="hero-badge">Catálogo actualizado</div>
-    <h1>Todo lo que<br>quieres ver,<br><span>en un solo lugar.</span></h1>
-    <p>Streaming, música, herramientas, combos y servicios para redes sociales. Pregunta disponibilidad antes de pagar.</p>
+    <h1>Streaming y redes<br><span>en un solo lugar.</span></h1>
+    <p>Combos, cuentas individuales y servicios de seguidores y likes para Instagram y Facebook. Pregunta disponibilidad antes de pagar.</p>
     <div class="hero-actions">
       <a href="#combos" class="btn-primary">Ver combos</a>
       <a href="https://wa.me/525516442906?text=Hola,%20quiero%20preguntar%20disponibilidad%20del%20cat%C3%A1logo%20StreamVault" target="_blank" class="btn-secondary">Pedir por WhatsApp</a>
     </div>
     <div class="stats">
-      <div class="stat"><span class="stat-num">$32</span><span class="stat-label">Desde</span></div>
-      <div class="stat"><span class="stat-num">4</span><span class="stat-label">Secciones</span></div>
+      <div class="stat"><span class="stat-num">$35</span><span class="stat-label">Desde</span></div>
+      <div class="stat"><span class="stat-num">3</span><span class="stat-label">Secciones</span></div>
       <div class="stat"><span class="stat-num">⚡</span><span class="stat-label">Rápido</span></div>
       <div class="stat"><span class="stat-num">🔐</span><span class="stat-label">Garantía</span></div>
     </div>
@@ -764,17 +258,17 @@
   <a class="quick-card" href="#combos">
     <div class="quick-icon">🌟</div>
     <div class="quick-title">Combos</div>
-    <div class="quick-text">Paquetes premium primero, con varias plataformas en una sola compra.</div>
+    <div class="quick-text">Paquetes con varias plataformas en una sola compra.</div>
   </a>
   <a class="quick-card" href="#catalogo">
     <div class="quick-icon">💻</div>
-    <div class="quick-title">Cuentas</div>
-    <div class="quick-text">Perfiles, pantallas, originales, genéricas y herramientas digitales.</div>
+    <div class="quick-title">Individuales</div>
+    <div class="quick-text">Netflix, Disney, Spotify, YouTube, Canva y más.</div>
   </a>
   <a class="quick-card" href="#redes">
     <div class="quick-icon">📲</div>
     <div class="quick-title">Seguidores y likes</div>
-    <div class="quick-text">Instagram, TikTok y Facebook: seguidores, likes, vistas y comentarios.</div>
+    <div class="quick-text">Instagram y Facebook: seguidores y likes desde $19.</div>
   </a>
 </section>
 
@@ -783,9 +277,9 @@
     <div>
       <div class="section-eyebrow">Paquetes</div>
       <h2 class="section-title">Combos StreamVault</h2>
-      <p class="section-sub">Combos para quienes quieren varias plataformas en una sola compra.</p>
+      <p class="section-sub">Combos actualizados con los precios nuevos. Cada botón prepara el pedido directo en WhatsApp.</p>
     </div>
-    <div class="section-pill">Ahorro por paquete</div>
+    <div class="section-pill">Pregunta disponibilidad</div>
   </div>
   <div id="comboRender"></div>
 </section>
@@ -793,52 +287,30 @@
 <section id="catalogo">
   <div class="section-header">
     <div>
-      <div class="section-eyebrow">Catálogo principal</div>
-      <h2 class="section-title">Perfiles, pantallas y servicios</h2>
-      <p class="section-sub">Usa el buscador o filtros. Cada botón prepara el mensaje con producto y precio en WhatsApp.</p>
+      <div class="section-eyebrow">Catálogo individual</div>
+      <h2 class="section-title">Cuentas individuales</h2>
+      <p class="section-sub">Precios individuales actualizados. Usa el buscador para encontrar rápido tu plataforma.</p>
     </div>
-    <div class="section-pill">Pregunta disponibilidad</div>
+    <div class="section-pill">Precios de julio</div>
   </div>
-
   <div class="catalog-tools">
-    <input id="search" class="search" placeholder="Buscar: Vix, Netflix, Spotify, Canva..." />
-    <div class="tabs">
-      <button class="tab active" data-filter="all">Todo</button>
-      <button class="tab" data-filter="streaming">Streaming</button>
-      <button class="tab" data-filter="musica">Música</button>
-      <button class="tab" data-filter="tools">Herramientas</button>
-      <button class="tab" data-filter="tv">TV/IPTV</button>
-      <button class="tab" data-filter="vpn">VPN</button>
-    </div>
+    <input id="search" class="search" placeholder="Buscar: Netflix, Disney, Spotify, Canva, Office..." />
   </div>
-
   <div id="catalogRender"></div>
-</section>
-
-<section id="completas">
-  <div class="section-header">
-    <div>
-      <div class="section-eyebrow">Acceso completo</div>
-      <h2 class="section-title">Cuentas completas</h2>
-      <p class="section-sub">Ideales cuando quieres una cuenta completa. Pregunta disponibilidad antes de enviar pago.</p>
-    </div>
-    <div class="section-pill">Más control</div>
+  <div class="note-box">
+    <h3>📌 Importante</h3>
+    <p>Las cuentas genéricas no se renuevan. Las cuentas originales sí se renuevan según disponibilidad. No cambies correo, contraseña, perfiles, PIN ni datos de la cuenta para conservar garantía.</p>
   </div>
-  <div id="completeRender"></div>
 </section>
-
-
-
-
 
 <section id="redes">
   <div class="section-header">
     <div>
       <div class="section-eyebrow">Crecimiento digital</div>
-      <h2 class="section-title">Redes sociales</h2>
-      <p class="section-sub">También manejamos seguidores, likes, comentarios y reacciones para Facebook, Instagram y TikTok.</p>
+      <h2 class="section-title">Seguidores y likes</h2>
+      <p class="section-sub">Venta de seguidores y likes para Instagram y Facebook. Pregunta por paquetes de 100, 1,000 o 10,000.</p>
     </div>
-    <div class="section-pill">Pregunta por cantidad</div>
+    <div class="section-pill">Desde $19</div>
   </div>
 
   <div class="redes-grid">
@@ -850,36 +322,15 @@
           <div class="redes-sub">Perfil y publicaciones</div>
         </div>
       </div>
-      <p>Servicios para crecer perfiles, publicaciones y dinámicas. Pregunta por paquetes de 100, 1,000 o 10,000.</p>
+      <p>Servicios para crecer tu perfil y mejorar la interacción de tus publicaciones.</p>
       <table class="redes-table">
         <thead><tr><th>Servicio</th><th>Desde</th></tr></thead>
         <tbody>
           <tr><td>Seguidores</td><td>$19</td></tr>
           <tr><td>Likes</td><td>$19</td></tr>
-          <tr><td>Comentarios</td><td>$19</td></tr>
         </tbody>
       </table>
-      <a class="btn-wa" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20informaci%C3%B3n%20de%20seguidores,%20likes%20o%20comentarios%20para%20Instagram">Pedir Instagram</a>
-    </div>
-
-    <div class="redes-card tiktok">
-      <div class="redes-head">
-        <div class="redes-icon">🎵</div>
-        <div>
-          <h3>TikTok</h3>
-          <div class="redes-sub">Videos y perfil</div>
-        </div>
-      </div>
-      <p>Impulso para videos, cuentas y publicaciones. Disponible según cantidad y tipo de servicio.</p>
-      <table class="redes-table">
-        <thead><tr><th>Servicio</th><th>Desde</th></tr></thead>
-        <tbody>
-          <tr><td>Seguidores</td><td>$19</td></tr>
-          <tr><td>Likes</td><td>$19</td></tr>
-          <tr><td>Vistas</td><td>$19</td></tr>
-        </tbody>
-      </table>
-      <a class="btn-wa" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20informaci%C3%B3n%20de%20seguidores,%20likes%20o%20vistas%20para%20TikTok">Pedir TikTok</a>
+      <a class="btn-wa" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20informaci%C3%B3n%20de%20seguidores%20o%20likes%20para%20Instagram">Pedir Instagram</a>
     </div>
 
     <div class="redes-card facebook">
@@ -890,62 +341,29 @@
           <div class="redes-sub">Páginas y publicaciones</div>
         </div>
       </div>
-      <p>Servicios para publicaciones, páginas y contenido. Ideal para aumentar interacción y alcance.</p>
+      <p>Servicios para páginas, perfiles y publicaciones de Facebook.</p>
       <table class="redes-table">
         <thead><tr><th>Servicio</th><th>Desde</th></tr></thead>
         <tbody>
           <tr><td>Seguidores</td><td>$19</td></tr>
-          <tr><td>Reacciones</td><td>$19</td></tr>
-          <tr><td>Comentarios</td><td>$19</td></tr>
+          <tr><td>Likes</td><td>$19</td></tr>
         </tbody>
       </table>
-      <a class="btn-wa" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20informaci%C3%B3n%20de%20seguidores,%20reacciones%20o%20comentarios%20para%20Facebook">Pedir Facebook</a>
-    </div>
-  </div>
-</section>
-
-<section id="reglas">
-  <div class="section-header">
-    <div>
-      <div class="section-eyebrow">Antes de comprar</div>
-      <h2 class="section-title">Reglas y garantía</h2>
-    </div>
-  </div>
-
-  <div class="rules-grid">
-    <div class="rule-box danger">
-      <h3>⚠️ Garantía</h3>
-      <ul>
-        <li>No editar perfiles, nombres, correos ni contraseñas.</li>
-        <li>No modificar información o configuraciones de la cuenta.</li>
-        <li>Cualquier cambio realizado por el cliente elimina automáticamente la garantía.</li>
-      </ul>
-    </div>
-    <div class="rule-box">
-      <h3>✅ Compra segura</h3>
-      <ul>
-        <li>Pregunta disponibilidad antes de pagar.</li>
-        <li>Manda comprobante después del pago.</li>
-        <li>Las cuentas genéricas no se renuevan; las originales sí según disponibilidad.</li>
-      </ul>
+      <a class="btn-wa" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20informaci%C3%B3n%20de%20seguidores%20o%20likes%20para%20Facebook">Pedir Facebook</a>
     </div>
   </div>
 </section>
 
 <section id="contacto">
-  <div class="payment-card">
-    <div>
-      <h3>💳 Método de pago</h3>
-      <div class="payment-lines">
-        <span>Mercado Pago</span>
-        <span class="payment-number">722969020451968417</span>
-        <span>Giovanna García</span>
-        <span>Después de pagar, manda comprobante por WhatsApp.</span>
-      </div>
-    </div>
-    <a class="btn-primary" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20mandar%20comprobante%20de%20pago%20StreamVault">Mandar comprobante</a>
+  <div class="note-box">
+    <h3>💬 ¿Quieres pedir algo?</h3>
+    <p>Escríbeme por WhatsApp con el nombre del combo, cuenta individual o servicio de redes que quieres. Te confirmo disponibilidad y datos de pago.</p>
+    <br>
+    <a class="btn-primary" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20comprar%20algo%20del%20cat%C3%A1logo%20StreamVault">Contactar por WhatsApp</a>
   </div>
 </section>
+
+<a class="floating-wa" target="_blank" href="https://wa.me/525516442906?text=Hola,%20quiero%20preguntar%20disponibilidad%20del%20cat%C3%A1logo%20StreamVault">WhatsApp</a>
 
 <footer>
   StreamVault MX · WhatsApp: +52 55 1644 2906 · Instagram: @streamvault.mx
@@ -955,145 +373,55 @@
 const WHATSAPP_NUMBER = '525516442906';
 
 const products = [
-  {cat:'streaming', group:'🎬 Netflix', name:'Netflix Original 27 días', price:67, tags:['Original'], icon:'🎬', style:'card-netflix'},
-  {cat:'streaming', group:'🎬 Netflix', name:'Netflix Original 33 días', price:78, tags:['Original'], icon:'🎬', style:'card-netflix'},
-  {cat:'streaming', group:'🎬 Netflix', name:'Netflix Perfil', price:85, tags:['Perfil'], icon:'🎬', style:'card-netflix'},
-  {cat:'streaming', group:'🎬 Netflix', name:'Netflix 3 meses', price:195, tags:['Perfil','3 meses'], icon:'🎬', style:'card-netflix'},
-  {cat:'streaming', group:'🎬 Netflix', name:'Netflix 6 meses', price:365, tags:['Perfil','6 meses'], icon:'🎬', style:'card-netflix'},
-
-  {cat:'streaming', group:'🏰 Disney+', name:'Disney Premium LATAM', price:55, tags:['Premium'], icon:'🏰', style:'card-disney'},
-  {cat:'streaming', group:'🏰 Disney+', name:'Disney Premium Hulu', price:41, tags:['Premium'], icon:'🏰', style:'card-disney'},
-  {cat:'streaming', group:'🏰 Disney+', name:'Disney Estándar', price:38, tags:['Estándar'], icon:'🏰', style:'card-disney'},
-  {cat:'streaming', group:'🏰 Disney+', name:'Disney Anual', price:224, tags:['Anual'], icon:'🏰', style:'card-disney'},
-
-  {cat:'streaming', group:'🎞️ Max / HBO', name:'Max Estándar Genérico', price:37, tags:['Genérico'], icon:'🎞️', style:'card-max'},
-  {cat:'streaming', group:'🎞️ Max / HBO', name:'Max Platino Genérico', price:45, tags:['Genérico','Platino'], icon:'🎞️', style:'card-max'},
-  {cat:'streaming', group:'🎞️ Max / HBO', name:'Max Platino Original', price:49, tags:['Original','Platino'], icon:'🎞️', style:'card-max'},
-
-  {cat:'streaming', group:'📦 Prime Video', name:'Prime Genérico', price:36, tags:['Genérico'], icon:'📦', style:'card-prime'},
-  {cat:'streaming', group:'📦 Prime Video', name:'Prime Original', price:47, tags:['Original'], icon:'📦', style:'card-prime'},
-  {cat:'streaming', group:'📦 Prime Video', name:'Prime 3 dispositivos', price:80, tags:['3 disp'], icon:'📦', style:'card-prime'},
-  {cat:'streaming', group:'📦 Prime Video', name:'Prime 6 meses', price:105, tags:['6 meses'], icon:'📦', style:'card-prime'},
-  {cat:'streaming', group:'📦 Prime Video', name:'Prime Anual', price:325, tags:['Anual'], icon:'📦', style:'card-prime'},
-
-  {cat:'streaming', group:'🍥 Crunchyroll', name:'Crunchyroll Genérico', price:45, tags:['Genérico'], icon:'🍥', style:'card-general'},
-  {cat:'streaming', group:'🍥 Crunchyroll', name:'Crunchyroll Original', price:49, tags:['Original'], icon:'🍥', style:'card-general'},
-  {cat:'streaming', group:'🍥 Crunchyroll', name:'Crunchyroll Anual Perfil', price:105, tags:['Anual','Perfil'], icon:'🍥', style:'card-general'},
-  {cat:'streaming', group:'🍥 Crunchyroll', name:'Crunchyroll Anual Completa', price:324, tags:['Anual','Completa'], icon:'🍥', style:'card-general'},
-
-  {cat:'streaming', group:'🎟️ Paramount+', name:'Paramount Premium', price:45, tags:['Premium'], icon:'🎟️', style:'card-general'},
-  {cat:'streaming', group:'🎟️ Paramount+', name:'Paramount Perfil', price:45, tags:['Perfil'], icon:'🎟️', style:'card-general'},
-  {cat:'streaming', group:'🎟️ Paramount+', name:'Paramount 2 meses', price:55, tags:['2 meses'], icon:'🎟️', style:'card-general'},
-  {cat:'streaming', group:'🎟️ Paramount+', name:'Paramount Anual', price:190, tags:['Anual'], icon:'🎟️', style:'card-general'},
-
-  {cat:'streaming', group:'📺 Vix', name:'Vix 1 mes Perfil', price:36, tags:['Perfil'], icon:'📺', style:'card-general'},
-  {cat:'streaming', group:'📺 Vix', name:'Vix 1 mes Completa', price:55, tags:['Completa'], icon:'📺', style:'card-general'},
-  {cat:'streaming', group:'📺 Vix', name:'Vix 2 meses', price:65, tags:['2 meses'], icon:'📺', style:'card-general'},
-  {cat:'streaming', group:'📺 Vix', name:'Vix 3 meses', price:46, tags:['3 meses'], icon:'📺', style:'card-general'},
-  {cat:'streaming', group:'📺 Vix', name:'Vix 12 meses Perfil', price:65, tags:['12 meses','Perfil'], icon:'📺', style:'card-general'},
-  {cat:'streaming', group:'📺 Vix', name:'Vix 12 meses Completa', price:114, tags:['12 meses','Completa'], icon:'📺', style:'card-general'},
-
-  {cat:'streaming', group:'🍎 Apple TV+', name:'Apple TV+ 1 mes', price:60, tags:['1 mes'], icon:'🍎', style:'card-general'},
-  {cat:'streaming', group:'🍎 Apple TV+', name:'Apple TV+ 3 meses Perfil', price:90, tags:['3 meses','Perfil'], icon:'🍎', style:'card-general'},
-  {cat:'streaming', group:'🍎 Apple TV+', name:'Apple TV+ 3 meses Completa', price:124, tags:['3 meses','Completa'], icon:'🍎', style:'card-general'},
-
-  {cat:'streaming', group:'▶️ YouTube', name:'YouTube Invitación', price:55, tags:['Invitación'], icon:'▶️', style:'card-youtube'},
-  {cat:'streaming', group:'▶️ YouTube', name:'YouTube Dominio', price:45, tags:['Dominio'], icon:'▶️', style:'card-youtube'},
-  {cat:'streaming', group:'▶️ YouTube', name:'YouTube Familiar', price:75, tags:['Familiar'], icon:'▶️', style:'card-youtube'},
-
-  {cat:'musica', group:'🎧 Música', name:'Spotify Genérico 1 mes', price:52, tags:['Genérico'], icon:'🎧', style:'card-spotify'},
-  {cat:'musica', group:'🎧 Música', name:'Spotify Genérico 3 meses', price:93, tags:['Genérico','3 meses'], icon:'🎧', style:'card-spotify'},
-  {cat:'musica', group:'🎧 Música', name:'Spotify a tus datos Original 1 mes', price:65, tags:['Original','a tus datos'], icon:'🎧', style:'card-spotify'},
-  {cat:'musica', group:'🎧 Música', name:'Amazon Music 3 meses', price:115, tags:['3 meses'], icon:'🎧', style:'card-general'},
-  {cat:'musica', group:'🎧 Música', name:'Tidal', price:61, tags:['Música'], icon:'🎶', style:'card-general'},
-
-  {cat:'tools', group:'🎨 Herramientas', name:'Canva 1 mes', price:32, tags:['1 mes'], icon:'🎨', style:'card-canva'},
-  {cat:'tools', group:'🎨 Herramientas', name:'Canva 2 meses', price:52, tags:['2 meses'], icon:'🎨', style:'card-canva'},
-  {cat:'tools', group:'🎨 Herramientas', name:'Canva 3 meses', price:58, tags:['3 meses'], icon:'🎨', style:'card-canva'},
-  {cat:'tools', group:'🎨 Herramientas', name:'Canva Anual', price:100, tags:['Anual'], icon:'🎨', style:'card-canva'},
-  {cat:'tools', group:'🎨 Herramientas', name:'CapCut Pro 1 mes', price:105, tags:['Pro'], icon:'🎬', style:'card-general'},
-  {cat:'tools', group:'🎨 Herramientas', name:'CapCut APK', price:65, tags:['APK'], icon:'📱', style:'card-general'},
-  {cat:'tools', group:'🎨 Herramientas', name:'Picsart', price:55, tags:['Edición'], icon:'🖼️', style:'card-general'},
-  {cat:'tools', group:'🤖 IA y productividad', name:'ChatGPT Plus', price:75, tags:['Plus'], icon:'🤖', style:'card-general'},
-  {cat:'tools', group:'🤖 IA y productividad', name:'Gemini', price:100, tags:['IA'], icon:'🤖', style:'card-general'},
-  {cat:'tools', group:'🤖 IA y productividad', name:'Microsoft 12 meses', price:74, tags:['12 meses'], icon:'💼', style:'card-general'},
-  {cat:'tools', group:'🦉 Educación', name:'Duolingo Perfil', price:45, tags:['Perfil'], icon:'🦉', style:'card-general'},
-  {cat:'tools', group:'🦉 Educación', name:'Duolingo Año', price:60, tags:['Anual'], icon:'🦉', style:'card-general'},
-
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Universal Plus', price:75, tags:['TV'], icon:'📡', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Plex Perfil', price:57, tags:['Perfil'], icon:'🎛️', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Plex Completa', price:59, tags:['Completa'], icon:'🎛️', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Flujo TV Pantalla', price:49, tags:['Pantalla'], icon:'📡', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Flujo TV Completa', price:80, tags:['Completa'], icon:'📡', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Tele Latino Pantalla', price:46, tags:['Pantalla'], icon:'📡', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Tele Latino Completa', price:81, tags:['Completa'], icon:'📡', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'IPTV Pantalla', price:45, tags:['Pantalla'], icon:'📺', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'IPTV 3 dispositivos', price:54, tags:['3 disp'], icon:'📺', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Mubi Pantalla', price:41, tags:['Pantalla'], icon:'🎞️', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Mubi Completa', price:51, tags:['Completa'], icon:'🎞️', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'AMC Pantalla', price:45, tags:['Pantalla'], icon:'🎥', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'AMC Completa', price:55, tags:['Completa'], icon:'🎥', style:'card-general'},
-  {cat:'tv', group:'📡 TV / IPTV / Extras', name:'Viki', price:55, tags:['Drama'], icon:'🌸', style:'card-general'},
-
-  {cat:'vpn', group:'🔐 VPN', name:'Surfshark VPN', price:105, tags:['VPN'], icon:'🔐', style:'card-general'},
-  {cat:'vpn', group:'🔐 VPN', name:'NordVPN 1 año', price:95, tags:['1 año'], icon:'🔐', style:'card-general'},
-  {cat:'vpn', group:'🔐 VPN', name:'ExpressVPN 1 año', price:95, tags:['1 año'], icon:'🔐', style:'card-general'}
-];
-
-const completeProducts = [
-  {group:'🔐 Cuentas completas', name:'Netflix Completa Original 13 días', price:145, tags:['Original'], icon:'🎬', style:'card-netflix'},
-  {group:'🔐 Cuentas completas', name:'Netflix Completa Original 27 días', price:238, tags:['Original'], icon:'🎬', style:'card-netflix'},
-  {group:'🔐 Cuentas completas', name:'Netflix Completa Original 33 días', price:278, tags:['Original'], icon:'🎬', style:'card-netflix'},
-  {group:'🔐 Cuentas completas', name:'Netflix Completa garantía 20 días', price:145, tags:['Inestable'], icon:'🎬', style:'card-netflix'},
-  {group:'🔐 Cuentas completas', name:'Disney Premium Hulu Completa', price:79, tags:['Completa'], icon:'🏰', style:'card-disney'},
-  {group:'🔐 Cuentas completas', name:'Disney Estándar Completa', price:69, tags:['Completa'], icon:'🏰', style:'card-disney'},
-  {group:'🔐 Cuentas completas', name:'Max Genérico Completa', price:58, tags:['Genérico','Completa'], icon:'🎞️', style:'card-max'},
-  {group:'🔐 Cuentas completas', name:'Max Original Platino Completa', price:68, tags:['Original','Completa'], icon:'🎞️', style:'card-max'},
-  {group:'🔐 Cuentas completas', name:'Amazon Prime Genérico Completa', price:49, tags:['Genérico','Completa'], icon:'📦', style:'card-prime'},
-  {group:'🔐 Cuentas completas', name:'Amazon Prime Original Completa', price:75, tags:['Original','Completa'], icon:'📦', style:'card-prime'},
-  {group:'🔐 Cuentas completas', name:'Crunchyroll Completa', price:49, tags:['Completa'], icon:'🍥', style:'card-general'},
-  {group:'🔐 Cuentas completas', name:'Paramount Completa', price:55, tags:['Completa'], icon:'🎟️', style:'card-general'},
-  {group:'🔐 Cuentas completas', name:'Universal Completa', price:60, tags:['Completa'], icon:'📡', style:'card-general'},
-  {group:'🔐 Cuentas completas', name:'Vix+ Completa', price:34, tags:['Completa'], icon:'📺', style:'card-general'},
-  {group:'🔐 Cuentas completas', name:'Apple TV+ Completa', price:67, tags:['Completa'], icon:'🍎', style:'card-general'}
+  {group:'💻 Cuentas individuales', name:'Netflix', price:80, tags:['Original','Renovable'], icon:'🎬', style:'card-netflix'},
+  {group:'💻 Cuentas individuales', name:'Disney Premium', price:50, tags:['Premium'], icon:'🏰', style:'card-disney'},
+  {group:'💻 Cuentas individuales', name:'YouTube Premium', price:50, tags:['Premium'], icon:'▶️', style:'card-youtube'},
+  {group:'💻 Cuentas individuales', name:'Spotify', price:65, tags:['Música'], icon:'🎧', style:'card-spotify'},
+  {group:'💻 Cuentas individuales', name:'Paramount', price:45, tags:['Premium'], icon:'🎟️', style:'card-general'},
+  {group:'💻 Cuentas individuales', name:'HBO Max', price:55, tags:['Streaming'], icon:'🎞️', style:'card-max'},
+  {group:'💻 Cuentas individuales', name:'Prime Video', price:50, tags:['Streaming'], icon:'📦', style:'card-prime'},
+  {group:'💻 Cuentas individuales', name:'Crunchyroll Premium', price:40, tags:['Premium'], icon:'🍥', style:'card-general'},
+  {group:'💻 Cuentas individuales', name:'Canva', price:48, tags:['Diseño'], icon:'🎨', style:'card-canva'},
+  {group:'💻 Cuentas individuales', name:'Vix Premium', price:35, tags:['Premium'], icon:'📺', style:'card-general'},
+  {group:'💻 Cuentas individuales', name:'Apple TV+', price:65, tags:['Streaming'], icon:'🍎', style:'card-general'},
+  {group:'💻 Cuentas individuales', name:'Office Anual', price:199, tags:['Anual'], icon:'💼', style:'card-general'}
 ];
 
 const combos = [
-  {group:'🦥 Combos Premium', name:'Combo Mariposas', price:159, desc:'Netflix + Disney+ + Vix + HBO Max + YouTube + Prime Video', icon:'🦋', style:'card-netflix'},
-  {group:'🦥 Combos Premium', name:'Combo Pollito', price:199, desc:'HBO Max Anual + Vix + Disney+ + Crunchyroll + YouTube + Netflix + Prime Video + Paramount+', icon:'🐥', style:'card-general'},
-  {group:'🦥 Combos Premium', name:'Combo León', price:86, desc:'HBO Max + Prime Video + Disney+', icon:'🦁', style:'card-max'},
-  {group:'🦥 Combos Premium', name:'Combo Delfín', price:99, desc:'HBO Max + Prime Video + Disney+ + Paramount+ + Crunchyroll', icon:'🐬', style:'card-prime'},
-  {group:'🦥 Combos Premium', name:'Combo Oso', price:70, desc:'HBO Max + Vix + Prime Video', icon:'🐻', style:'card-general'},
-  {group:'🦥 Combos Premium', name:'Combo Pez', price:89, desc:'HBO Max + Disney+ + Vix + Prime Video', icon:'🐟', style:'card-disney'},
-  {group:'🦥 Combos Premium', name:'Combo Elefante', price:90, desc:'HBO Max + Prime Video + Disney+ + Crunchyroll', icon:'🐘', style:'card-general'},
+  {group:'🎢 Combos de julio', name:'Combo Nova', price:109, desc:'Netflix + Vix + Paramount', icon:'🚀', style:'card-netflix'},
+  {group:'🎢 Combos de julio', name:'Combo Órbita', price:79, desc:'Disney+ + Vix + Paramount', icon:'🪐', style:'card-disney'},
+  {group:'🎢 Combos de julio', name:'Combo Fusión', price:79, desc:'Prime Video + HBO Max + Paramount', icon:'🔥', style:'card-prime'},
+  {group:'🎢 Combos de julio', name:'Combo Beat', price:99, desc:'Spotify + Apple TV+ + Prime Video', icon:'🎧', style:'card-spotify'},
+  {group:'🎢 Combos de julio', name:'Combo Pulse', price:79, desc:'Disney+ + HBO Max + Prime Video', icon:'⚡', style:'card-max'},
+  {group:'🎢 Combos de julio', name:'Combo Galaxy', price:129, desc:'Vix + HBO Max + Crunchyroll + Prime Video + Disney+ + Paramount', icon:'🌌', style:'card-general'},
 
-  {group:'🌟 Combos StreamVault', name:'Combo Nova', price:75, desc:'Netflix + Vix + Paramount', icon:'🚀', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Eclipse', price:55, desc:'Disney Premium Hulu + Crunchyroll + Paramount + Vix', icon:'🌙', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Órbita', price:48, desc:'Vix + Disney + Paramount', icon:'🪐', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Fusión', price:52, desc:'Prime Video + Max Genérico + Paramount', icon:'🔥', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Beat', price:70, desc:'Spotify + Apple TV + Prime Video', icon:'🎧', style:'card-spotify'},
-  {group:'🌟 Combos StreamVault', name:'Combo Aurora', price:55, desc:'Disney Premium Hulu + Max Genérico + Prime Video', icon:'🌌', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Titan', price:56, desc:'Disney Premium Hulu + Crunchyroll + Paramount + Prime Video + Vix', icon:'⚡', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Galaxy', price:64, desc:'Prime + Disney + Paramount + Crunchyroll + Max + Vix', icon:'🌠', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Pulse', price:54, desc:'Disney + Max + Prime', icon:'💎', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Storm', price:53, desc:'Paramount + Crunchyroll + Disney + Vix + Prime', icon:'🌪️', style:'card-general'},
-  {group:'🌟 Combos StreamVault', name:'Combo Infinity', price:80, desc:'Netflix + Disney + Prime', icon:'♾️', style:'card-netflix'}
+  {group:'🦋 Combos especiales', name:'Combo Mariposa', price:159, desc:'Netflix + Disney+ + Vix + HBO Max + YouTube + Prime Video', icon:'🦋', style:'card-netflix'},
+  {group:'🦋 Combos especiales', name:'Combo Pollito', price:199, desc:'HBO Max + Vix + Disney+ + Crunchyroll + YouTube + Netflix + Prime Video + Paramount+', icon:'🐥', style:'card-general'},
+  {group:'🦋 Combos especiales', name:'Combo León', price:86, desc:'HBO Max + Prime Video + Disney+', icon:'🦁', style:'card-max'},
+  {group:'🦋 Combos especiales', name:'Combo Delfín', price:99, desc:'HBO Max + Prime Video + Disney+ + Paramount+ + Crunchyroll', icon:'🐬', style:'card-prime'},
+  {group:'🦋 Combos especiales', name:'Combo Oso', price:70, desc:'HBO Max + Vix + Prime Video', icon:'🐻', style:'card-general'},
+  {group:'🦋 Combos especiales', name:'Combo Pez', price:89, desc:'HBO Max + Disney+ + Vix + Prime Video', icon:'🐟', style:'card-disney'},
+  {group:'🦋 Combos especiales', name:'Combo Elefante', price:90, desc:'HBO Max + Prime Video + Disney+ + Crunchyroll', icon:'🐘', style:'card-general'},
+
+  {group:'🌟 Combos extra StreamVault', name:'Combo Eclipse', price:75, desc:'Disney Premium Hulu + Crunchyroll + Paramount + Vix', icon:'🌙', style:'card-general'},
+  {group:'🌟 Combos extra StreamVault', name:'Combo Aurora', price:75, desc:'Disney Premium Hulu + HBO Max Genérico + Prime Video', icon:'🌌', style:'card-general'},
+  {group:'🌟 Combos extra StreamVault', name:'Combo Titan', price:81, desc:'Disney Premium Hulu + Crunchyroll + Paramount + Prime Video + Vix', icon:'🛡️', style:'card-general'},
+  {group:'🌟 Combos extra StreamVault', name:'Combo Storm', price:78, desc:'Paramount + Crunchyroll + Disney + Vix + Prime Video', icon:'⛈️', style:'card-general'},
+  {group:'🌟 Combos extra StreamVault', name:'Combo Infinity', price:105, desc:'Netflix + Disney+ + Prime Video', icon:'♾️', style:'card-netflix'}
 ];
 
 function tagClass(tag) {
   const t = tag.toLowerCase();
   if (t.includes('original')) return 'original';
   if (t.includes('genérico') || t.includes('generico')) return 'generico';
-  if (t.includes('completa')) return 'completa';
-  if (t.includes('inestable')) return 'alert';
+  if (t.includes('renovable')) return 'renovable';
+  if (t.includes('no renovable')) return 'no-renovable';
   return '';
 }
-
 function waLink(name, price) {
   const msg = `Hola, quiero pedir: ${name} ($${price}). ¿Hay disponibilidad?`;
   return `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(msg)}`;
 }
-
 function cardHTML(item) {
   const tags = (item.tags || []).map(t => `<span class="tag ${tagClass(t)}">${t}</span>`).join('');
   const category = item.desc ? item.desc : 'Pregunta disponibilidad';
@@ -1116,7 +444,6 @@ function cardHTML(item) {
     </article>
   `;
 }
-
 function groupedHTML(items) {
   const groups = [...new Set(items.map(i => i.group))];
   return groups.map(group => `
@@ -1128,39 +455,22 @@ function groupedHTML(items) {
     </div>
   `).join('');
 }
-
 const catalogRender = document.getElementById('catalogRender');
-const completeRender = document.getElementById('completeRender');
 const comboRender = document.getElementById('comboRender');
 const search = document.getElementById('search');
-let activeFilter = 'all';
-
 function renderCatalog() {
   const q = search.value.trim().toLowerCase();
   const filtered = products.filter(item => {
-    const matchesFilter = activeFilter === 'all' || item.cat === activeFilter;
     const text = `${item.name} ${item.group} ${(item.tags || []).join(' ')}`.toLowerCase();
-    return matchesFilter && text.includes(q);
+    return text.includes(q);
   });
   catalogRender.innerHTML = filtered.length
     ? groupedHTML(filtered)
-    : '<div class="rule-box"><h3>No encontré ese producto</h3><p>Pregunta por WhatsApp, puede estar disponible aunque no aparezca en la lista.</p></div>';
+    : '<div class="note-box"><h3>No encontré ese producto</h3><p>Pregunta por WhatsApp, puede estar disponible aunque no aparezca en la lista.</p></div>';
 }
-
-document.querySelectorAll('.tab').forEach(btn => {
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeFilter = btn.dataset.filter;
-    renderCatalog();
-  });
-});
-
 search.addEventListener('input', renderCatalog);
-
-catalogRender.innerHTML = groupedHTML(products);
-completeRender.innerHTML = groupedHTML(completeProducts);
 comboRender.innerHTML = groupedHTML(combos);
+renderCatalog();
 </script>
 </body>
 </html>
