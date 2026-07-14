@@ -378,6 +378,9 @@
       backdrop-filter:blur(20px);
       box-shadow:0 20px 55px rgba(0,0,0,.36);
     }
+    .promo-bottom > *{
+      min-width:0;
+    }
     .promo-copy small{
       display:block;
       color:var(--accent);
@@ -1224,14 +1227,37 @@
       .hero{padding-top:calc(var(--header-h) + 42px);min-height:auto}
       .hero h1{font-size:clamp(4.2rem,23vw,7.5rem)}
       .hero-panel{min-height:430px;border-radius:24px}
-      .promo-bottom{left:10px;right:10px;bottom:10px;grid-template-columns:1fr;padding:16px;gap:12px}
-      .promo-action{width:100%}
-      .promo-dots{bottom:154px}
-      .promo-arrow{width:38px;height:38px}
-      .promo-prev{left:8px}
-      .promo-next{right:8px}
+      .hero-actions{display:grid;grid-template-columns:1fr;gap:12px}
+      .hero-actions .btn{width:100%}
+      .promo-bottom{
+        left:10px;
+        right:10px;
+        bottom:10px;
+        display:flex;
+        flex-direction:column;
+        align-items:stretch;
+        padding:14px;
+        gap:10px
+      }
+      .promo-copy strong{font-size:1.06rem;line-height:1.08}
+      .promo-price-line{gap:6px;margin-top:7px}
+      .promo-price{font-size:1.28rem}
+      .promo-regular{font-size:.74rem}
+      .promo-action{
+        width:100%;
+        min-width:0;
+        min-height:48px;
+        padding:0 14px;
+        font-size:.92rem;
+        white-space:normal;
+        justify-content:center
+      }
+      .promo-action span{display:none}
+      .promo-dots{bottom:138px}
+      .promo-arrow{display:none}
       .promo-topbar{top:10px;left:10px;right:10px}
       .promo-mxn{display:none}
+      .promo-slide img{object-position:center top}
       .orb-a{width:190px;height:190px}
       .orb-b{width:125px;height:125px}
       .orbit{width:330px;height:330px;left:-10px}
