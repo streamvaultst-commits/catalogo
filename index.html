@@ -244,6 +244,15 @@
       align-items:end;
       width:100%;
     }
+    .hero-grid > *,
+    .hero-grid > * > *,
+    .promo-carousel,
+    .promo-bottom,
+    .promo-copy{
+      min-width:0;
+      max-width:100%;
+    }
+
     .hero-kicker{
       display:flex;
       align-items:center;
@@ -449,31 +458,65 @@
     .promo-arrow:hover{background:#fff;color:#0b0d10}
     .promo-prev{left:15px}
     .promo-next{right:15px}
+    .promo-arrow svg{pointer-events:none}
     .promo-dots{
       position:absolute;
-      z-index:8;
+      z-index:9;
       left:50%;
       bottom:128px;
       transform:translateX(-50%);
       display:flex;
-      gap:7px;
-      padding:7px 9px;
+      align-items:center;
+      gap:8px;
+      max-width:calc(100% - 40px);
+      padding:8px 10px;
+      border:1px solid rgba(255,255,255,.12);
       border-radius:999px;
-      background:rgba(4,6,8,.58);
-      backdrop-filter:blur(10px);
+      background:rgba(4,6,8,.72);
+      backdrop-filter:blur(12px);
+      box-shadow:0 10px 28px rgba(0,0,0,.25);
     }
     .promo-dot{
-      width:7px;
-      height:7px;
+      position:relative;
+      width:8px;
+      height:8px;
+      flex:0 0 auto;
       padding:0;
+      overflow:hidden;
       border:0;
       border-radius:999px;
-      background:rgba(255,255,255,.35);
-      transition:.25s ease;
+      background:rgba(255,255,255,.32);
+      transition:width .28s ease, background .2s ease;
+    }
+    .promo-dot::after{
+      content:"";
+      position:absolute;
+      inset:0;
+      width:0%;
+      border-radius:inherit;
+      background:var(--accent);
     }
     .promo-dot.active{
-      width:24px;
-      background:var(--accent);
+      width:34px;
+      background:rgba(255,255,255,.2);
+    }
+    .promo-dot.active::after{
+      animation:promoProgress 6.5s linear forwards;
+    }
+    .promo-dot.paused::after{
+      animation-play-state:paused;
+    }
+    .promo-countdown{
+      min-width:28px;
+      color:#dbe1e8;
+      font-family:"DM Mono",monospace;
+      font-size:.62rem;
+      letter-spacing:.04em;
+      text-align:right;
+    }
+    @keyframes promoProgress{
+      from{width:0%}
+      to{width:100%}
     }
     .hero-trust{
       grid-column:1 / -1;
@@ -1224,11 +1267,63 @@
       .section{padding:78px 0}
       .section-head{grid-template-columns:1fr;gap:20px;margin-bottom:30px}
       .section-title{font-size:clamp(2.5rem,14vw,4.4rem)}
-      .hero{padding-top:calc(var(--header-h) + 42px);min-height:auto}
-      .hero h1{font-size:clamp(4.2rem,23vw,7.5rem)}
-      .hero-panel{min-height:430px;border-radius:24px}
-      .hero-actions{display:grid;grid-template-columns:1fr;gap:12px}
-      .hero-actions .btn{width:100%}
+      body{width:100%;max-width:100%;overflow-x:hidden}
+      main,.hero,.hero-grid,.hero-grid>div,.hero-panel{
+        width:100%;
+        max-width:100%;
+        min-width:0
+      }
+      .hero{
+        padding-top:calc(var(--header-h) + 42px);
+        min-height:auto;
+        overflow:hidden
+      }
+      .hero-grid{
+        display:block;
+        width:100%;
+        max-width:100%
+      }
+      .hero-grid>div:first-child{
+        width:100%;
+        max-width:100%;
+        overflow:hidden
+      }
+      .hero h1{
+        width:100%;
+        max-width:100%;
+        font-size:clamp(2.85rem,13vw,4.15rem);
+        line-height:.84;
+        letter-spacing:-.075em;
+        overflow-wrap:anywhere;
+        word-break:normal
+      }
+      .hero-sub{
+        width:100%;
+        max-width:100%;
+        font-size:1rem;
+        overflow-wrap:anywhere
+      }
+      .hero-panel{
+        min-height:430px;
+        border-radius:24px;
+        margin-top:34px;
+        overflow:hidden
+      }
+      .hero-actions{
+        display:grid;
+        grid-template-columns:minmax(0,1fr);
+        gap:12px;
+        width:100%;
+        max-width:100%
+      }
+      .hero-actions .btn{
+        width:100%;
+        max-width:100%;
+        min-width:0;
+        padding-inline:14px;
+        white-space:normal;
+        text-align:center
+      }
       .promo-bottom{
         left:10px;
         right:10px;
@@ -1245,19 +1340,55 @@
       .promo-regular{font-size:.74rem}
       .promo-action{
         width:100%;
+        max-width:100%;
         min-width:0;
         min-height:48px;
         padding:0 14px;
+        box-sizing:border-box;
+        overflow:hidden;
         font-size:.92rem;
         white-space:normal;
         justify-content:center
       }
       .promo-action span{display:none}
-      .promo-dots{bottom:138px}
-      .promo-arrow{display:none}
+      .promo-carousel,.promo-slide,.promo-slide img{
+        width:100%;
+        max-width:100%
+      }
+      .promo-slide img{
+        object-fit:cover;
+        object-position:center top
+      }
+      .promo-bottom{
+        box-sizing:border-box;
+        max-width:calc(100% - 20px)
+      }
+      .promo-copy{overflow:hidden}
+      .promo-copy strong,.promo-price-line{
+        max-width:100%;
+        overflow-wrap:anywhere
+      }
+      .promo-dots{
+        bottom:138px;
+        max-width:calc(100% - 88px);
+        gap:6px;
+        padding:7px 9px
+      }
+      .promo-dot.active{width:28px}
+      .promo-countdown{font-size:.58rem;min-width:26px}
+      .promo-arrow{
+        display:grid;
+        top:auto;
+        bottom:134px;
+        width:38px;
+        height:38px;
+        margin:0;
+        background:rgba(4,6,8,.78)
+      }
+      .promo-prev{left:12px}
+      .promo-next{right:12px}
       .promo-topbar{top:10px;left:10px;right:10px}
       .promo-mxn{display:none}
-      .promo-slide img{object-position:center top}
       .orb-a{width:190px;height:190px}
       .orb-b{width:125px;height:125px}
       .orbit{width:330px;height:330px;left:-10px}
@@ -1389,9 +1520,19 @@
               <span class="promo-day" id="promoDay">Oferta semanal</span>
               <span class="promo-mxn">Precios en MXN</span>
             </div>
-            <button class="promo-arrow promo-prev" id="promoPrev" aria-label="Promoción anterior">‹</button>
-            <button class="promo-arrow promo-next" id="promoNext" aria-label="Promoción siguiente">›</button>
-            <div class="promo-dots" id="promoDots" aria-label="Seleccionar promoción"></div>
+            <button class="promo-arrow promo-prev" id="promoPrev" aria-label="Promoción anterior">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="m14.5 5-7 7 7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <button class="promo-arrow promo-next" id="promoNext" aria-label="Promoción siguiente">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
+                <path d="m9.5 5 7 7-7 7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </button>
+            <div class="promo-dots" id="promoDots" aria-label="Seleccionar promoción">
+              <span class="promo-countdown" id="promoCountdown">6.5s</span>
+            </div>
             <div class="promo-bottom">
               <div class="promo-copy">
                 <small id="promoLabel">Promoción del día</small>
@@ -2120,6 +2261,10 @@
 
     let promoIndex = 0;
     let promoTimer = null;
+    let promoCountdownTimer = null;
+    let promoRemaining = 6500;
+    let promoStartedAt = 0;
+    const PROMO_DURATION = 6500;
 
     const state = {
       category: "Todos",
@@ -2168,7 +2313,8 @@
       promoTitle: document.getElementById("promoTitle"),
       promoPrice: document.getElementById("promoPrice"),
       promoRegular: document.getElementById("promoRegular"),
-      promoAction: document.getElementById("promoAction")
+      promoAction: document.getElementById("promoAction"),
+      promoCountdown: document.getElementById("promoCountdown")
     };
 
     const money = value => new Intl.NumberFormat("es-MX", {
@@ -2193,7 +2339,8 @@
 
       els.promoDots.innerHTML = promos.map((promo,index) => `
         <button class="promo-dot ${index === promoIndex ? "active" : ""}" data-promo-dot="${index}" aria-label="Ver promoción de ${promo.day}"></button>
-      `).join("");
+      `).join("") + `<span class="promo-countdown" id="promoCountdown">6.5s</span>`;
+      els.promoCountdown = document.getElementById("promoCountdown");
 
       els.promoDots.querySelectorAll("[data-promo-dot]").forEach(dot => {
         dot.addEventListener("click", () => {
@@ -2215,8 +2362,15 @@
         slide.classList.toggle("active", i === promoIndex);
       });
       els.promoDots.querySelectorAll("[data-promo-dot]").forEach((dot,i) => {
+        dot.classList.remove("active");
+        dot.classList.remove("paused");
+        void dot.offsetWidth;
         dot.classList.toggle("active", i === promoIndex);
       });
+
+      promoRemaining = PROMO_DURATION;
+      promoStartedAt = performance.now();
+      updatePromoCountdown();
 
       els.promoDay.textContent = promo.day;
       els.promoLabel.textContent = promo.label;
@@ -2227,9 +2381,55 @@
       els.promoAction.setAttribute("aria-label", `Pedir promoción de ${promo.day}`);
     }
 
+    function updatePromoCountdown(){
+      if(!els.promoCountdown) return;
+      const seconds = Math.max(0, promoRemaining / 1000);
+      els.promoCountdown.textContent = `${seconds.toFixed(1)}s`;
+    }
+
+    function startPromoCountdown(){
+      clearInterval(promoCountdownTimer);
+      promoStartedAt = performance.now();
+      promoCountdownTimer = setInterval(() => {
+        const elapsed = performance.now() - promoStartedAt;
+        promoRemaining = Math.max(0, PROMO_DURATION - elapsed);
+        updatePromoCountdown();
+      }, 100);
+    }
+
     function restartPromoTimer(){
       clearInterval(promoTimer);
-      promoTimer = setInterval(() => showPromo(promoIndex + 1), 6500);
+      clearInterval(promoCountdownTimer);
+      promoRemaining = PROMO_DURATION;
+      updatePromoCountdown();
+      startPromoCountdown();
+      promoTimer = setInterval(() => {
+        showPromo(promoIndex + 1);
+        clearInterval(promoCountdownTimer);
+        startPromoCountdown();
+      }, PROMO_DURATION);
+    }
+
+    function pausePromoTimer(){
+      clearInterval(promoTimer);
+      clearInterval(promoCountdownTimer);
+      const elapsed = performance.now() - promoStartedAt;
+      promoRemaining = Math.max(0, promoRemaining - elapsed);
+      updatePromoCountdown();
+      const activeDot = els.promoDots.querySelector(".promo-dot.active");
+      if(activeDot) activeDot.classList.add("paused");
+    }
+
+    function resumePromoTimer(){
+      const activeDot = els.promoDots.querySelector(".promo-dot.active");
+      if(activeDot) activeDot.classList.remove("paused");
+      promoStartedAt = performance.now();
+      startPromoCountdown();
+      clearTimeout(promoTimer);
+      promoTimer = setTimeout(() => {
+        showPromo(promoIndex + 1);
+        restartPromoTimer();
+      }, promoRemaining);
     }
 
     function applyConfig(){
@@ -2480,8 +2680,10 @@
       showPromo(promoIndex + 1);
       restartPromoTimer();
     });
-    els.promoCarousel.addEventListener("mouseenter", () => clearInterval(promoTimer));
-    els.promoCarousel.addEventListener("mouseleave", restartPromoTimer);
+    els.promoCarousel.addEventListener("mouseenter", pausePromoTimer);
+    els.promoCarousel.addEventListener("mouseleave", resumePromoTimer);
+    els.promoCarousel.addEventListener("touchstart", pausePromoTimer, {passive:true});
+    els.promoCarousel.addEventListener("touchend", resumePromoTimer, {passive:true});
 
     els.menuOpen.addEventListener("click", openMenu);
     els.menuClose.addEventListener("click", closeMenu);
